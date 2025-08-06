@@ -30,6 +30,8 @@ public struct AASA: Codable {
             && activityContinuation == nil {
             throw KnilKitError.noData
         }
+        
+        self.logAASAFormat(source: "disk")
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -51,6 +53,7 @@ public struct AASA: Codable {
                 if let currentData = string.data(using: .utf8),
                     let aasa = try? JSONDecoder().decode(AASA.self, from: currentData) {
                     self = aasa
+                    self.logAASAFormat(source: "network")
                     return
                 } else {
                     startIndex = string.startIndex
@@ -65,5 +68,21 @@ public struct AASA: Codable {
         }
 
         throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Cannot decode from data"))
+    }
+    
+    private func logAASAFormat(source: String = "unknown") {
+        let format = appLinks?.format ?? .legacy
+        let formatString = format == .modern ? "New Format (iOS 13+)" : "Legacy Format"
+        let sourceIcon = source == "network" ? "🌐" : source == "disk" ? "💾" : "📄"
+        
+        print("\(sourceIcon) AASA loaded from \(source): \(formatString)")
+        
+        if let appLinks = appLinks, format == .modern {
+            let componentCount = appLinks.details.compactMap { $0.components }.flatMap { $0 }.count
+            print("   • Contains \(componentCount) URL component(s) with advanced matching")
+        } else if let appLinks = appLinks, format == .legacy {
+            let pathCount = appLinks.details.compactMap { $0.paths }.flatMap { $0 }.count
+            print("   • Contains \(pathCount) path pattern(s)")
+        }
     }
 }

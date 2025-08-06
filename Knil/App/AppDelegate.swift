@@ -63,7 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: URLOpener {
     func openURL(_ url: URL) -> Bool {
-        return UIApplication.shared.openURL(url)
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        return true
     }
 }
 

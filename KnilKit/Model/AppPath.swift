@@ -13,6 +13,9 @@ public struct AppPath: Codable {
     /// The strings you use to specify website paths is case sensitive.
     public let pathString: String
     public let excluded: Bool
+    public let queryComponent: QueryComponent?
+    public let fragmentString: String?
+    public let isComponentBased: Bool
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.singleValueContainer()
@@ -25,12 +28,46 @@ public struct AppPath: Codable {
             excluded = false
             pathString = string
         }
+        
+        // Legacy format - no query or fragment components
+        self.queryComponent = nil
+        self.fragmentString = nil
+        self.isComponentBased = false
+    }
+    
+    public init(from component: URLComponent, excluded: Bool = false) {
+        self.pathString = component.path ?? "*"
+        self.queryComponent = component.query
+        self.fragmentString = component.fragment
+        self.excluded = excluded
+        self.isComponentBased = true
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         let string = (excluded ? "NOT " : "") + pathString
         try container.encode(string)
+    }
+    
+    public var fullDisplayString: String {
+        var result = excluded ? "NOT " : ""
+        result += pathString
+        
+        if let query = queryComponent {
+            switch query {
+            case .string(let queryString):
+                result += "?\(queryString)"
+            case .dictionary(let queryDict):
+                let queryItems = queryDict.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+                result += "?\(queryItems)"
+            }
+        }
+        
+        if let fragment = fragmentString {
+            result += "#\(fragment)"
+        }
+        
+        return result
     }
 }
 

@@ -72,8 +72,13 @@ class DetailViewController: UITableViewController {
 
     private var titleSection: TableViewSectionViewModel {
         let userAASA = self.userAASA
+        
+        // Determine format
+        let format = userAASA.aasa.appLinks?.format ?? .legacy
+        let formatText = format == .modern ? "New Format (iOS 13+)" : "Legacy Format"
+        let subtitle = "\(userAASA.cellSubtitle) • \(formatText)"
 
-        let titleRow = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: userAASA.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
+        let titleRow = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: subtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
         let aasaActionsRow = TableViewCellViewModel(title: "Actions".localized(), subtitle: "Open in other tools, see raw file, or reload.".localized(), cellStyle: .subtitle, selectAction: {
             let alertController = UIAlertController(title: "Actions".localized(), message: userAASA.url.absoluteString, preferredStyle: .alert)
 

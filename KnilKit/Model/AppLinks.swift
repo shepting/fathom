@@ -8,35 +8,27 @@
 
 import Foundation
 
+public enum AASAFormat {
+    case legacy    // Uses "paths" key
+    case modern    // Uses "components" key (WWDC 2019)
+}
+
 public struct AppLinks: Codable {
     /// The apps key in an apple-app-site-association file must be present and its value must be an empty array
     public let apps: [AppID]?
     public let details: [AppDetail]
+    
+    public var format: AASAFormat {
+        // Check if any AppDetail has components - this is the key indicator
+        return details.contains { $0.components != nil } ? .modern : .legacy
+    }
 
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
 
         apps = try values.decodeIfPresent([AppID].self, forKey: .apps)
 
-        do {
-            details = try values.decode([AppDetail].self, forKey: .details)
-        } catch {
-            if let detailsDict = try values.decodeIfPresent([String: [String: [AppPath]]].self, forKey: .details) {
-                details = try detailsDict.map {
-                    guard let appID = AppID(string: $0.key) else {
-                        throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.details], debugDescription: "AppID decode invalid"))
-                    }
-
-                    guard let paths = $0.value["paths"] else {
-                        throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.details], debugDescription: "AppDetail decode invalid"))
-                    }
-
-                    return AppDetail(appID: appID, paths: paths)
-                }
-            } else {
-                throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.details], debugDescription: "AppDetail decode invalid"))
-            }
-        }
+        details = try values.decode([AppDetail].self, forKey: .details)
 
     }
 }
