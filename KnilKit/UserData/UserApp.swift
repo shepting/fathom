@@ -33,8 +33,34 @@ public class UserApp: Codable {
         self.hostname = hostname
         self.appID = appID
 
-        paths = aasa.appLinks?.details.filter { $0.appID == appID }.first?.paths
-        supportsAppLinks = aasa.appLinks?.details.filter { $0.appID == appID }.first != nil
+        // Find AppDetail that contains this appID (supporting both legacy and new formats)
+        let appDetail = aasa.appLinks?.details.first { detail in
+            detail.allAppIDs.contains(appID)
+        }
+        
+        // Get paths from either legacy format or convert from components
+        if let detail = appDetail {
+            var allPaths: [AppPath] = []
+            
+            // Add legacy format paths
+            if let legacyPaths = detail.paths {
+                allPaths.append(contentsOf: legacyPaths)
+            }
+            
+            // Add component-based paths
+            if let components = detail.components {
+                let componentPaths = components.map { component in
+                    AppPath(from: component, excluded: detail.exclude ?? false)
+                }
+                allPaths.append(contentsOf: componentPaths)
+            }
+            
+            paths = allPaths.isEmpty ? nil : allPaths
+        } else {
+            paths = nil
+        }
+        
+        supportsAppLinks = appDetail != nil
         supportsWebCredentials = aasa.webCredentials?.appIDs.contains(appID) == true
         supportsActivityContinuation = aasa.activityContinuation?.appIDs.contains(appID) == true
     }

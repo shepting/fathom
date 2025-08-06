@@ -23,10 +23,17 @@ public class UserAASA: Codable {
         self.hostname = url.host?.lowercased() ?? ""
         self.userApps = UserAASA.extractUserApps(from: aasa, hostname: hostname)
         self.customURLs = [:]
+        
+        // Additional logging with hostname context
+        let format = aasa.appLinks?.format ?? .legacy
+        let formatString = format == .modern ? "New Format (iOS 13+)" : "Legacy Format"
+        print("🏠 \(hostname): \(formatString)")
     }
 
     public func update(_ aasa: AASA) {
-        print("UserAASA \(hostname) updated AASA")
+        let format = aasa.appLinks?.format ?? .legacy
+        let formatString = format == .modern ? "New Format (iOS 13+)" : "Legacy Format"
+        print("🔄 \(hostname) updated to: \(formatString)")
         self.aasa = aasa
 
         let newUserApps = UserAASA.extractUserApps(from: aasa, hostname: hostname)
@@ -44,7 +51,12 @@ public class UserAASA: Codable {
 
     private static func extractUserApps(from aasa: AASA, hostname: String) -> [UserApp] {
         var set: Set<AppID> = []
-        set.formUnion(aasa.appLinks?.details.compactMap({ $0.appID }) ?? [])
+        
+        // Extract app IDs from both legacy and new formats
+        for detail in aasa.appLinks?.details ?? [] {
+            set.formUnion(detail.allAppIDs)
+        }
+        
         set.formUnion(aasa.webCredentials?.appIDs ?? [])
         set.formUnion(aasa.activityContinuation?.appIDs ?? [])
         return set.sorted(by: { $0.bundleID < $1.bundleID }).map { UserApp(hostname: hostname, appID: $0, aasa: aasa) }

@@ -43,23 +43,39 @@ class LinkViewController: UITableViewController {
 
     private func reloadData() {
         DispatchQueue.main.async {
-            if let rows = self.userApp.paths?.map ({ path in
-                return TableViewCellViewModel(title: path.cellTitle, cellStyle: .default, accessoryType: .detailDisclosureButton, selectAction: {
-                    if let url = path.url(hostname: self.userApp.hostname) {
-                        _ = self.urlOpener?.openURL(url)
-                    }
-                }, detailAction: {
-                    if let url = path.url(hostname: self.userApp.hostname) {
-                        DispatchQueue.main.async {
-                            self.navigationController?.popViewController(animated: true)
-                            self.navigationController?.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (_) in
-                                self.delegate?.duplicateLinkAndCompose(url)
-                            })
+            if let allPaths = self.userApp.paths {
+                let rows = allPaths.map { path in
+                    TableViewCellViewModel(
+                        title: path.cellTitle,
+                        subtitle: path.cellSubtitle,
+                        cellStyle: path.cellSubtitle != nil ? .subtitle : .default,
+                        accessoryType: .detailDisclosureButton,
+                        selectAction: {
+                            if let url = path.url(hostname: self.userApp.hostname) {
+                                _ = self.urlOpener?.openURL(url)
+                            }
+                        },
+                        detailAction: {
+                            if let url = path.url(hostname: self.userApp.hostname) {
+                                DispatchQueue.main.async {
+                                    self.navigationController?.popViewController(animated: true)
+                                    self.navigationController?.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (_) in
+                                        self.delegate?.duplicateLinkAndCompose(url)
+                                    })
+                                }
+                            }
                         }
-                    }
-                })
-            }) {
-                let section = TableViewSectionViewModel(header: "Universal Links".localized(), footer: "Make sure you have the app installed. Tap each link to test. If labelled with NOT, it should open in Safari. Otherwise, it should open in the app.\n\nTap (i) to duplicate and compose the link for custom testing.".localized(), rows: rows)
+                    )
+                }
+                
+                // Determine if this contains new format components
+                let hasComponentBased = allPaths.contains { $0.isComponentBased }
+                
+                let footerText = hasComponentBased ?
+                    "New AASA format detected. Links may include query and fragment matching.\n\nMake sure you have the app installed. Tap each link to test. If labelled with NOT, it should open in Safari. Otherwise, it should open in the app.\n\nTap (i) to duplicate and compose the link for custom testing.".localized() :
+                    "Make sure you have the app installed. Tap each link to test. If labelled with NOT, it should open in Safari. Otherwise, it should open in the app.\n\nTap (i) to duplicate and compose the link for custom testing.".localized()
+                
+                let section = TableViewSectionViewModel(header: "Universal Links".localized(), footer: footerText, rows: rows)
                 self.viewModel.sections = [section]
             }
 

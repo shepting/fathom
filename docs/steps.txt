@@ -1,0 +1,340 @@
+# Steps to Add Support for New AASA Format in Knil App
+
+## Overview
+The Knil app currently supports the legacy AASA format with `paths` arrays. This document outlines steps to detect and support both legacy and new AASA formats (introduced at WWDC 2019) that use `components` instead of `paths`.
+
+## Current Architecture Analysis
+
+### Key Files to Modify:
+1. `KnilKit/Model/AppDetail.swift` - Core model for app details
+2. `KnilKit/Model/AppLinks.swift` - AppLinks container
+3. `KnilKit/Model/AppPath.swift` - Path representation (needs expansion)
+4. `KnilUIKit/LinkViewController/LinkViewController.swift` - Path display UI
+5. `KnilUIKit/Extension/AppPath+Extension.swift` - UI extensions
+
+### Current Flow:
+- `AASA.swift` decodes JSON → `AppLinks` → `AppDetail` array → `AppPath` array
+- UI displays paths in `LinkViewController` using `AppPath.cellTitle`
+
+## Implementation Steps
+
+### Step 1: Detect AASA Format Type
+**File**: `KnilKit/Model/AppLinks.swift`
+
+Add format detection logic:
+```swift
+public enum AASAFormat {
+    case legacy    // Uses "paths" key
+    case modern    // Uses "components" key (WWDC 2019)
+}
+
+public var format: AASAFormat {
+    // Check if any AppDetail has components - this is the key indicator
+    return details.contains { $0.components != nil } ? .modern : .legacy
+}
+```
+
+### Step 2: Extend AppDetail Model
+**File**: `KnilKit/Model/AppDetail.swift`
+
+Add support for both formats:
+```swift
+public struct AppDetail: Codable {
+    public let appID: AppID?           // Optional for new format
+    public let appIDs: [AppID]?        // New format support
+    public let paths: [AppPath]?       // Legacy format
+    public let components: [URLComponent]?  // New format
+    public let exclude: Bool?          // New format exclusion
+    
+    // Computed property to get all app IDs
+    public var allAppIDs: [AppID] {
+        if let appIDs = appIDs {
+            return appIDs
+        } else if let appID = appID {
+            return [appID]
+        }
+        return []
+    }
+}
+```
+
+### Step 3: Create URLComponent Model
+**File**: `KnilKit/Model/URLComponent.swift` (New)
+
+```swift
+public struct URLComponent: Codable {
+    public let path: String?           // "/" key
+    public let query: QueryComponent?  // "?" key  
+    public let fragment: String?       // "#" key
+    
+    enum CodingKeys: String, CodingKey {
+        case path = "/"
+        case query = "?"
+        case fragment = "#"
+    }
+}
+
+public enum QueryComponent: Codable {
+    case string(String)
+    case dictionary([String: String])
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let string = try? container.decode(String.self) {
+            self = .string(string)
+        } else if let dict = try? container.decode([String: String].self) {
+            self = .dictionary(dict)
+        } else {
+            throw DecodingError.typeMismatch(QueryComponent.self, 
+                DecodingError.Context(codingPath: decoder.codingPath, 
+                debugDescription: "Invalid query component"))
+        }
+    }
+}
+```
+
+### Step 4: Extend AppPath for Components
+**File**: `KnilKit/Model/AppPath.swift`
+
+Add new initializer and display methods:
+```swift
+public struct AppPath: Codable {
+    public let pathString: String
+    public let excluded: Bool
+    public let queryComponent: QueryComponent?
+    public let fragmentString: String?
+    public let isComponentBased: Bool  // Track if from new format
+    
+    // New initializer for URLComponent
+    public init(from component: URLComponent, excluded: Bool = false) {
+        self.pathString = component.path ?? "*"
+        self.queryComponent = component.query
+        self.fragmentString = component.fragment
+        self.excluded = excluded
+        self.isComponentBased = true
+    }
+    
+    // Enhanced display string
+    public var fullDisplayString: String {
+        var result = excluded ? "NOT " : ""
+        result += pathString
+        
+        if let query = queryComponent {
+            switch query {
+            case .string(let queryString):
+                result += "?\(queryString)"
+            case .dictionary(let queryDict):
+                let queryItems = queryDict.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+                result += "?\(queryItems)"
+            }
+        }
+        
+        if let fragment = fragmentString {
+            result += "#\(fragment)"
+        }
+        
+        return result
+    }
+}
+```
+
+### Step 5: Update AppPath Extension for UI
+**File**: `KnilUIKit/Extension/AppPath+Extension.swift`
+
+```swift
+extension AppPath {
+    var cellTitle: String {
+        return isComponentBased ? fullDisplayString : (excluded ? "NOT \(pathString)" : pathString)
+    }
+    
+    var cellSubtitle: String? {
+        guard isComponentBased else { return nil }
+        
+        var details: [String] = []
+        
+        if let query = queryComponent {
+            details.append("Query matching")
+        }
+        
+        if fragmentString != nil {
+            details.append("Fragment matching")
+        }
+        
+        return details.isEmpty ? nil : details.joined(separator: ", ")
+    }
+}
+```
+
+### Step 6: Update UserApp Model
+**File**: `KnilKit/UserData/UserApp.swift`
+
+Add method to handle both formats:
+```swift
+extension UserApp {
+    var allPaths: [AppPath] {
+        guard let appDetail = appDetail else { return [] }
+        
+        var paths: [AppPath] = []
+        
+        // Legacy format paths
+        if let legacyPaths = appDetail.paths {
+            paths.append(contentsOf: legacyPaths)
+        }
+        
+        // New format components
+        if let components = appDetail.components {
+            let componentPaths = components.map { component in
+                AppPath(from: component, excluded: appDetail.exclude ?? false)
+            }
+            paths.append(contentsOf: componentPaths)
+        }
+        
+        return paths
+    }
+}
+```
+
+### Step 7: Update LinkViewController
+**File**: `KnilUIKit/LinkViewController/LinkViewController.swift`
+
+Modify the reloadData method:
+```swift
+private func reloadData() {
+    DispatchQueue.main.async {
+        let allPaths = self.userApp.allPaths
+        
+        let rows = allPaths.map { path in
+            TableViewCellViewModel(
+                title: path.cellTitle, 
+                subtitle: path.cellSubtitle,
+                cellStyle: path.cellSubtitle != nil ? .subtitle : .default,
+                accessoryType: .detailDisclosureButton, 
+                selectAction: {
+                    if let url = path.url(hostname: self.userApp.hostname) {
+                        _ = self.urlOpener?.openURL(url)
+                    }
+                }, 
+                detailAction: {
+                    if let url = path.url(hostname: self.userApp.hostname) {
+                        DispatchQueue.main.async {
+                            self.navigationController?.popViewController(animated: true)
+                            self.navigationController?.transitionCoordinator?.animate(
+                                alongsideTransition: nil, 
+                                completion: { (_) in
+                                    self.delegate?.duplicateLinkAndCompose(url)
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+        }
+        
+        let footerText = self.userApp.format == .modern ? 
+            "New AASA format detected. Links may include query and fragment matching.\n\nMake sure you have the app installed. Tap each link to test. If labelled with NOT, it should open in Safari. Otherwise, it should open in the app.\n\nTap (i) to duplicate and compose the link for custom testing." :
+            "Make sure you have the app installed. Tap each link to test. If labelled with NOT, it should open in Safari. Otherwise, it should open in the app.\n\nTap (i) to duplicate and compose the link for custom testing."
+            
+        let section = TableViewSectionViewModel(
+            header: "Universal Links".localized(), 
+            footer: footerText.localized(), 
+            rows: rows
+        )
+        self.viewModel.sections = [section]
+        
+        self.navigationItem.title = self.userApp.app?.appName ?? self.userApp.appID.bundleID
+    }
+}
+```
+
+### Step 8: Add Format Indicator in DetailViewController
+**File**: `KnilUIKit/DetailViewController/DetailViewController.swift`
+
+Update the titleSection to show format type:
+```swift
+private var titleSection: TableViewSectionViewModel {
+    let userAASA = self.userAASA
+    
+    // Determine format
+    let format = userAASA.aasa.appLinks?.format ?? .legacy
+    let formatText = format == .modern ? "New Format (iOS 13+)" : "Legacy Format"
+    
+    let titleRow = TableViewCellViewModel(
+        title: userAASA.cellTitle, 
+        subtitle: "\(userAASA.cellSubtitle ?? "") • \(formatText)", 
+        cellStyle: .subtitle, 
+        selectionStyle: .none, 
+        accessoryType: .none
+    )
+    
+    // ... rest of method unchanged
+}
+```
+
+## Testing Strategy
+
+### Step 9: Add Unit Tests
+**File**: `KnilKitTests/AASAFormatTests.swift` (New)
+
+```swift
+func testLegacyFormatDetection() {
+    let json = """
+    {
+        "applinks": {
+            "apps": [],
+            "details": [
+                {
+                    "appID": "TEAM.BUNDLE",
+                    "paths": ["/path/*"]
+                }
+            ]
+        }
+    }
+    """
+    // Test legacy detection
+}
+
+func testModernFormatDetection() {
+    let json = """
+    {
+        "applinks": {
+            "details": [
+                {
+                    "appIDs": ["TEAM.BUNDLE"],
+                    "components": [
+                        {
+                            "/": "/path/*",
+                            "?": {"param": "value"}
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+    """
+    // Test modern detection
+}
+```
+
+### Step 10: Update Documentation
+**File**: `README.md` or in-app help
+
+Add section explaining the new format support:
+- What's new in iOS 13+ AASA format
+- How the app detects and displays different formats
+- Benefits of the new component-based matching
+
+## Migration Notes
+
+1. **Backward Compatibility**: Existing AASA files will continue to work unchanged
+2. **Mixed Format**: Some AASA files might have both `paths` and `components` - handle both
+3. **UI Indicators**: Show format type in the UI so users understand what they're looking at
+4. **Error Handling**: Gracefully handle malformed new format files
+5. **Performance**: New format parsing should not impact existing performance
+
+## Key Benefits After Implementation
+
+1. **Full Format Support**: Handle both legacy and modern AASA formats
+2. **Enhanced Display**: Show query and fragment matching details
+3. **Better UX**: Users can see which format they're working with
+4. **Future-Proof**: Ready for more complex URL matching scenarios
+5. **Educational**: Helps developers understand AASA evolution
