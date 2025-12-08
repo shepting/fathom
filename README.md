@@ -31,6 +31,46 @@ Add websites, download related apps, test Universal Links, and customize test li
 | 🆓 | Free without ads |
 | 🚫 | No third-party tracking or analytics |
 
+## AASA Format Support
+
+Fathom supports both legacy and modern AASA (apple-app-site-association) formats:
+
+### Legacy Format (Pre-iOS 13)
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [{
+      "appID": "TEAMID.BUNDLEID",
+      "paths": ["/path/*", "NOT /excluded/*"]
+    }]
+  }
+}
+```
+
+### Modern Format (iOS 13+)
+Introduced at WWDC 2019 with enhanced URL component matching:
+```json
+{
+  "applinks": {
+    "details": [{
+      "appIDs": ["TEAMID.BUNDLEID"],
+      "components": [{
+        "/": "/path/*",
+        "?": {"param": "value*"},
+        "#": "fragment"
+      }]
+    }]
+  }
+}
+```
+
+Key differences in the modern format:
+- `apps` array no longer required
+- `appIDs` (plural) supports multiple apps per rule
+- `components` replaces `paths` with granular matching for path (`/`), query (`?`), and fragment (`#`)
+- `exclude` key for explicit exclusion rules
+
 ## Naming
 ```
 "fathom" == "link".reversed()

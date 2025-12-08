@@ -40,6 +40,26 @@ public class UserDataStore {
             userAASAs = try UserDataStore.load(from: fileURL)
         } catch {
             print(error.localizedDescription)
+            // If no saved data exists, seed with defaults
+            seedDefaultsIfNeeded()
+        }
+    }
+
+    private func seedDefaultsIfNeeded() {
+        guard userAASAs.isEmpty else { return }
+
+        let defaultHostnames = ["airbnb.com"]
+
+        for hostname in defaultHostnames {
+            AASAURLSuggestor.suggestAASA(from: hostname) { [weak self] result in
+                switch result {
+                case .value(let userAASA):
+                    _ = self?.upsert(userAASA)
+                    self?.archive()
+                case .error(let error):
+                    print("Failed to seed \(hostname): \(error.localizedDescription)")
+                }
+            }
         }
     }
 

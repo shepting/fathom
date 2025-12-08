@@ -132,15 +132,6 @@ class DetailViewController: UITableViewController {
         })
         rows.append(addCustomLinkRow)
 
-        if let pasteboardString = UIPasteboard.general.string,
-            let url = URL(string: pasteboardString),
-            url.host == self.userAASA.hostname {
-            let pasteLinkRow = TableViewCellViewModel(title: "+ Add Link From Clipboard".localized(), subtitle: url.absoluteString, cellStyle: .subtitle, selectAction: {
-                self.composeLink(url, title: "")
-            })
-            rows.append(pasteLinkRow)
-        }
-
         let footer = customLinkRows.isEmpty ? "Add custom links for testing.".localized() : "Add custom links for testing. Tap (i) to duplicate and compose the link.".localized()
         let customLinksSection = TableViewSectionViewModel(header: "Custom Links".localized(), footer: footer, rows: rows)
 
