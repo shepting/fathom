@@ -48,7 +48,7 @@ public class UserDataStore {
     private func seedDefaultsIfNeeded() {
         guard userAASAs.isEmpty else { return }
 
-        let defaultHostnames = ["airbnb.com"]
+        let defaultHostnames = ["airbnb.com", "akamai-staging.airbnb.com"]
 
         for hostname in defaultHostnames {
             AASAURLSuggestor.suggestAASA(from: hostname) { [weak self] result in
