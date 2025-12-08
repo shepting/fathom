@@ -44,7 +44,9 @@ class LinkViewController: UITableViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             if let allPaths = self.userApp.paths {
-                let rows = allPaths.map { path in
+                // Sort paths so excluded (NOT) items appear at the bottom
+                let sortedPaths = allPaths.sorted { !$0.excluded && $1.excluded }
+                let rows = sortedPaths.map { path in
                     TableViewCellViewModel(
                         title: path.cellTitle,
                         subtitle: path.cellSubtitle,
