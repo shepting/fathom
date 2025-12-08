@@ -33,3 +33,6 @@ rvm.env
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
+
+## Simulator logs
+simulator.log

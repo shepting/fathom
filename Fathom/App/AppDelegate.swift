@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: URLOpener {
     func openURL(_ url: URL) -> Bool {
+        print("Opening URL: \(url.absoluteString)")
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
         return true
     }

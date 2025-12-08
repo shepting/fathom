@@ -10,6 +10,7 @@ SIMULATOR="iPhone 16"
 BUNDLE_ID="com.hepting.Fathom"
 # Use /tmp for build output to avoid iCloud extended attributes issues
 BUILD_DIR="/tmp/fathom-build"
+LOG_FILE="$(dirname "$0")/simulator.log"
 
 echo "Cleaning extended attributes (iCloud workaround)..."
 xattr -cr . 2>/dev/null || true
@@ -29,10 +30,22 @@ echo "Installing app..."
 APP_PATH=$(find "$BUILD_DIR" -name "*.app" -type d | head -1)
 xcrun simctl install "$SIMULATOR" "$APP_PATH"
 
-echo "Launching app..."
-xcrun simctl launch "$SIMULATOR" "$BUNDLE_ID"
+# Kill any existing app or log process
+pkill -f "simctl launch.*console" 2>/dev/null || true
+
+# Clear previous logs
+> "$LOG_FILE"
+
+echo "Launching app with console output (writing to $LOG_FILE)..."
+xcrun simctl launch --console "$SIMULATOR" "$BUNDLE_ID" >> "$LOG_FILE" 2>&1 &
+APP_PID=$!
 
 echo "Opening Simulator..."
 open -a Simulator
 
+# Give the app a moment to start and log initial messages
+sleep 2
+
 echo "Done!"
+echo "Logs are being written to: $LOG_FILE"
+echo "Follow logs in real-time with: tail -f $LOG_FILE"

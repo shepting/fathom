@@ -14,7 +14,7 @@ extension UserDefaults {
 
     var appStoreOption: AppStoreOption {
         get {
-            return AppStoreOption(rawValue: UserDefaults.standard.integer(forKey: UserDefaults.appStoreOptionKey)) ?? .appStore
+            return AppStoreOption(rawValue: UserDefaults.standard.integer(forKey: UserDefaults.appStoreOptionKey)) ?? .storeProductViewController
         }
         set {
             UserDefaults.standard.set(newValue.rawValue, forKey: UserDefaults.appStoreOptionKey)
