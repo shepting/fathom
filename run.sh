@@ -15,9 +15,6 @@ LOG_FILE="$SCRIPT_DIR/simulator.log"
 
 echo "Using simulator: $SIMULATOR"
 
-echo "Cleaning extended attributes..."
-xattr -cr . 2>/dev/null || true
-
 echo "Building $SCHEME..."
 echo "Build log: $BUILD_LOG"
 xcodebuild -project "$PROJECT" \
