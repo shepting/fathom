@@ -8,6 +8,7 @@ fastlane/report.xml
 
 ## Build generated
 build/
+.build/
 DerivedData
 
 ## Various settings
@@ -34,6 +35,7 @@ rvm.env
 *.hmap
 *.ipa
 
-## Simulator logs
+## Logs
 simulator.log
+xcodebuild.log
 .DS_Store

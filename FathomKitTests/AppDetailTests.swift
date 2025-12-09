@@ -86,7 +86,7 @@ class AppDetailTests: XCTestCase {
 
         let appDetail = try? JSONDecoder().decode(AppDetail.self, from: testData)
         XCTAssertNotNil(appDetail)
-        XCTAssertEqual(appDetail?.appID.teamID, "YV88822DH9")
-        XCTAssertEqual(appDetail?.appID.bundleID, "com.twitter.dogfood.internal")
+        XCTAssertEqual(appDetail?.appID?.teamID, "YV88822DH9")
+        XCTAssertEqual(appDetail?.appID?.bundleID, "com.twitter.dogfood.internal")
     }
 }

@@ -23,7 +23,16 @@ public struct AppDetail: Codable {
         }
         return []
     }
-    
+
+    /// Convenience initializer for creating AppDetail from legacy dictionary format
+    public init(appID: AppID, paths: [AppPath]?, components: [URLComponent]?) {
+        self.appID = appID
+        self.appIDs = nil
+        self.paths = paths
+        self.components = components
+        self.exclude = nil
+    }
+
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         

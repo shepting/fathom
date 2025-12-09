@@ -6,22 +6,28 @@ set -e
 
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
-SIMULATOR="iPhone 16"
 BUNDLE_ID="com.hepting.Fathom"
-# Use /tmp for build output to avoid iCloud extended attributes issues
-BUILD_DIR="/tmp/fathom-build"
-LOG_FILE="$(dirname "$0")/simulator.log"
+SIMULATOR="iPhone 16"
+SCRIPT_DIR="$(dirname "$0")"
+BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
+BUILD_DIR="$SCRIPT_DIR/.build"
+LOG_FILE="$SCRIPT_DIR/simulator.log"
 
-echo "Cleaning extended attributes (iCloud workaround)..."
-xattr -cr . 2>/dev/null || true
+echo "Using simulator: $SIMULATOR"
+
+if ! command -v xcbeautify &> /dev/null; then
+    echo "Installing xcbeautify..."
+    brew install xcbeautify
+fi
 
 echo "Building $SCHEME..."
+echo "Build log: $BUILD_LOG"
 xcodebuild -project "$PROJECT" \
     -scheme "$SCHEME" \
     -sdk iphonesimulator \
     -destination "platform=iOS Simulator,name=$SIMULATOR" \
     -derivedDataPath "$BUILD_DIR" \
-    build
+    build 2>&1 | tee "$BUILD_LOG" | xcbeautify
 
 echo "Booting simulator..."
 xcrun simctl boot "$SIMULATOR" 2>/dev/null || true

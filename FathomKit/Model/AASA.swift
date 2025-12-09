@@ -42,27 +42,63 @@ public struct AASA: Codable {
     }
 
     public init(data: Data) throws {
-        if var string = String(data: data, encoding: .ascii) {
-            var startIndex = string.range(of: "{")?.lowerBound ?? string.startIndex
-            var endIndex = string.range(of: "}", options: .backwards, range: nil, locale: nil)?.upperBound ?? string.endIndex
+        // Try multiple string encodings
+        let encodings: [String.Encoding] = [.utf8, .ascii, .isoLatin1]
 
-            while startIndex < endIndex {
-                let substring = string[startIndex ..< endIndex]
-                string = String(substring)
+        for encoding in encodings {
+            guard let string = String(data: data, encoding: encoding) else { continue }
 
-                if let currentData = string.data(using: .utf8),
-                    let aasa = try? JSONDecoder().decode(AASA.self, from: currentData) {
+            // Find JSON by looking for AASA key markers
+            let jsonMarkers = ["\"applinks\"", "\"webcredentials\"", "\"activitycontinuation\""]
+
+            // Find the earliest marker position
+            var earliestMarkerIndex: String.Index?
+            for marker in jsonMarkers {
+                if let range = string.range(of: marker) {
+                    if earliestMarkerIndex == nil || range.lowerBound < earliestMarkerIndex! {
+                        earliestMarkerIndex = range.lowerBound
+                    }
+                }
+            }
+
+            // If we found a marker, search backwards for the opening brace
+            if let markerIndex = earliestMarkerIndex {
+                let prefixRange = string.startIndex..<markerIndex
+                if let openBraceRange = string.range(of: "{", options: .backwards, range: prefixRange) {
+                    let startIndex = openBraceRange.lowerBound
+
+                    // Try progressively shorter substrings ending with }
+                    var searchEndIndex = string.endIndex
+                    while searchEndIndex > startIndex {
+                        if let closeBraceRange = string.range(of: "}", options: .backwards, range: startIndex..<searchEndIndex) {
+                            let endIndex = closeBraceRange.upperBound
+                            let jsonCandidate = String(string[startIndex..<endIndex])
+
+                            if let jsonData = jsonCandidate.data(using: .utf8),
+                               let aasa = try? JSONDecoder().decode(AASA.self, from: jsonData) {
+                                self = aasa
+                                self.logAASAFormat(source: "network")
+                                return
+                            }
+
+                            // Move search end to before this closing brace
+                            searchEndIndex = closeBraceRange.lowerBound
+                        } else {
+                            break
+                        }
+                    }
+                }
+            }
+
+            // Fallback: try the original approach for simple unsigned files
+            if let firstBrace = string.range(of: "{"),
+               let lastBrace = string.range(of: "}", options: .backwards) {
+                let jsonCandidate = String(string[firstBrace.lowerBound..<lastBrace.upperBound])
+                if let jsonData = jsonCandidate.data(using: .utf8),
+                   let aasa = try? JSONDecoder().decode(AASA.self, from: jsonData) {
                     self = aasa
                     self.logAASAFormat(source: "network")
                     return
-                } else {
-                    startIndex = string.startIndex
-
-                    if let newEndIndex = string.range(of: "}", options: .backwards, range: string.startIndex ..< string.index(string.endIndex, offsetBy: -1), locale: nil)?.upperBound {
-                        endIndex = newEndIndex
-                    } else {
-                        break
-                    }
                 }
             }
         }

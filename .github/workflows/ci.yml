@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-15]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: List available simulators
+        run: xcrun simctl list devices available
+
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+
+      - name: Build and Test
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Fathom.xcodeproj \
+            -scheme Fathom \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            clean test 2>&1 | tee xcodebuild.log | xcbeautify
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-and-test-log-${{ matrix.os }}
+          path: xcodebuild.log
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+
+  screenshot:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build and run app
+        run: ./run.sh
+
+      - name: Take screenshot
+        run: ./screenshot.sh
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-build-log
+          path: build.log
+
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-screenshot
+          path: /tmp/simulator-screenshot.png
+
+      - name: Add screenshot to job summary
+        run: ./.github/add-screenshot-summary.sh /tmp/simulator-screenshot.png
+
+  ui-tests:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run UI Tests
+        run: ./ui_test.sh
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-log
+          path: xcodebuild.log
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-results
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
