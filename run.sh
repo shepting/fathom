@@ -7,20 +7,8 @@ set -e
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 BUNDLE_ID="com.hepting.Fathom"
-BUILD_LOG=""
-
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --log)
-            BUILD_LOG="$2"
-            shift 2
-            ;;
-        *)
-            shift
-            ;;
-    esac
-done
+SCRIPT_DIR="$(dirname "$0")"
+BUILD_LOG="$SCRIPT_DIR/build.log"
 
 # Detect available iPhone 16 simulator (extract UUID which is the first parenthesized group)
 SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | grep -v "Pro\|Plus" | head -1 | sed 's/.*(\([A-F0-9-]*\)).*/\1/')
@@ -39,38 +27,21 @@ echo "Cleaning extended attributes (iCloud workaround)..."
 xattr -cr . 2>/dev/null || true
 
 echo "Building $SCHEME..."
-if [ -n "$BUILD_LOG" ] && command -v xcbeautify &> /dev/null; then
-    # Log to file and pipe through xcbeautify
+echo "Build log: $BUILD_LOG"
+if command -v xcbeautify &> /dev/null; then
     xcodebuild -project "$PROJECT" \
         -scheme "$SCHEME" \
         -sdk iphonesimulator \
         -destination "platform=iOS Simulator,id=$SIMULATOR" \
         -derivedDataPath "$BUILD_DIR" \
         build 2>&1 | tee "$BUILD_LOG" | xcbeautify
-elif [ -n "$BUILD_LOG" ]; then
-    # Log to file without xcbeautify
+else
     xcodebuild -project "$PROJECT" \
         -scheme "$SCHEME" \
         -sdk iphonesimulator \
         -destination "platform=iOS Simulator,id=$SIMULATOR" \
         -derivedDataPath "$BUILD_DIR" \
         build 2>&1 | tee "$BUILD_LOG"
-elif command -v xcbeautify &> /dev/null; then
-    # xcbeautify only
-    xcodebuild -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -sdk iphonesimulator \
-        -destination "platform=iOS Simulator,id=$SIMULATOR" \
-        -derivedDataPath "$BUILD_DIR" \
-        build 2>&1 | xcbeautify
-else
-    # Plain xcodebuild
-    xcodebuild -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -sdk iphonesimulator \
-        -destination "platform=iOS Simulator,id=$SIMULATOR" \
-        -derivedDataPath "$BUILD_DIR" \
-        build
 fi
 
 echo "Booting simulator..."

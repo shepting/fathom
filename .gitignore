@@ -34,6 +34,7 @@ rvm.env
 *.hmap
 *.ipa
 
-## Simulator logs
+## Logs
 simulator.log
+build.log
 .DS_Store

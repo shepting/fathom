@@ -58,7 +58,7 @@ jobs:
         run: brew install xcbeautify
 
       - name: Build and run app
-        run: ./run.sh --log run.log
+        run: ./run.sh
 
       - name: Take screenshot
         run: ./screenshot.sh
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: screenshot-build-log
-          path: run.log
+          path: build.log
 
       - name: Upload screenshot
         uses: actions/upload-artifact@v4
