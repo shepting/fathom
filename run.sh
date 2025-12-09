@@ -10,12 +10,12 @@ BUNDLE_ID="com.hepting.Fathom"
 SIMULATOR="iPhone 16"
 SCRIPT_DIR="$(dirname "$0")"
 BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
-BUILD_DIR="/tmp/fathom-build"
+BUILD_DIR="$SCRIPT_DIR/.build"
 LOG_FILE="$SCRIPT_DIR/simulator.log"
 
 echo "Using simulator: $SIMULATOR"
 
-echo "Cleaning extended attributes (iCloud workaround)..."
+echo "Cleaning extended attributes..."
 xattr -cr . 2>/dev/null || true
 
 echo "Building $SCHEME..."
