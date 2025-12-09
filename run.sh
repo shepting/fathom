@@ -7,21 +7,13 @@ set -e
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 BUNDLE_ID="com.hepting.Fathom"
+SIMULATOR="iPhone 16"
 SCRIPT_DIR="$(dirname "$0")"
 BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
-
-# Detect available iPhone 16 simulator (extract UUID which is the first parenthesized group)
-SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | grep -v "Pro\|Plus" | head -1 | sed 's/.*(\([A-F0-9-]*\)).*/\1/')
-if [ -z "$SIMULATOR" ]; then
-    echo "Error: No iPhone 16 simulator found"
-    xcrun simctl list devices available
-    exit 1
-fi
-SIMULATOR_NAME="iPhone 16"
-echo "Using simulator: $SIMULATOR_NAME ($SIMULATOR)"
-# Use /tmp for build output to avoid iCloud extended attributes issues
 BUILD_DIR="/tmp/fathom-build"
-LOG_FILE="$(dirname "$0")/simulator.log"
+LOG_FILE="$SCRIPT_DIR/simulator.log"
+
+echo "Using simulator: $SIMULATOR"
 
 echo "Cleaning extended attributes (iCloud workaround)..."
 xattr -cr . 2>/dev/null || true
@@ -31,7 +23,7 @@ echo "Build log: $BUILD_LOG"
 xcodebuild -project "$PROJECT" \
     -scheme "$SCHEME" \
     -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,id=$SIMULATOR" \
+    -destination "platform=iOS Simulator,name=$SIMULATOR" \
     -derivedDataPath "$BUILD_DIR" \
     build 2>&1 | tee "$BUILD_LOG" | xcbeautify
 
