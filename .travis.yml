@@ -1,3 +1,0 @@
-language: objective-c
-osx_image: xcode10.2
-script: xcodebuild -scheme Fathom clean && xcodebuild -sdk iphonesimulator -project Fathom.xcodeproj -scheme Fathom -destination 'platform=iOS Simulator,name=iPhone X,OS=12.0' test
