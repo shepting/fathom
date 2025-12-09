@@ -86,24 +86,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Boot simulator
-        run: |
-          xcrun simctl boot "iPhone 16" || true
-
       - name: Run UI Tests
-        run: |
-          xcodebuild \
-            -project Fathom.xcodeproj \
-            -scheme Fathom \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
-            -only-testing:FathomUITests \
-            test
+        run: ./ui_test.sh
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-log
+          path: xcodebuild.log
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ui-test-results
-          path: |
-            ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+          path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
