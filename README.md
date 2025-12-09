@@ -1,12 +1,11 @@
 # Fathom 🔗
 
-[![Travis CI](https://travis-ci.org/ethanhuang13/fathom.svg?branch=master)](https://travis-ci.org/ethanhuang13/fathom)
-![GitHub release](https://img.shields.io/github/release/ethanhuang13/fathom.svg)
-![GitHub top language](https://img.shields.io/github/languages/top/ethanhuang13/fathom.svg)
-![](https://img.shields.io/badge/Platform-iOS%209.0%2B-lightgrey.svg)
-[![License](https://img.shields.io/github/license/ethanhuang13/fathom.svg)](https://github.com/ethanhuang13/fathom/blob/master/LICENSE)
-[![Twitter](https://img.shields.io/badge/Twitter-%40ethanhuang13-blue.svg)](https://twitter.com/ethanhuang13)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ethanhuang13)
+[![CI](https://github.com/shepting/fathom/actions/workflows/ci.yml/badge.svg)](https://github.com/shepting/fathom/actions/workflows/ci.yml)
+![GitHub release](https://img.shields.io/github/release/shepting/fathom.svg)
+![GitHub top language](https://img.shields.io/github/languages/top/shepting/fathom.svg)
+![](https://img.shields.io/badge/Platform-iOS%2015.6%2B-lightgrey.svg)
+[![License](https://img.shields.io/github/license/shepting/fathom.svg)](https://github.com/shepting/fathom/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/badge/Twitter-%40stevenhepting-blue.svg)](https://twitter.com/stevenhepting)
 
 [![](App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
 
@@ -84,11 +83,11 @@ Download the official release version from [App Store](https://itunes.apple.com/
 
 Or, you can install this open source app with the following steps:
 
-1. Clone the repo on [GitHub](https://github.com/ethanhuang13/fathom)
-2. Open the project with Xcode 10.2 or above
+1. Clone the repo on [GitHub](https://github.com/shepting/fathom)
+2. Open the project with Xcode 16 or above
 3. Change bundle ID to something like `com.yourcompany.Fathom`
 4. Build and run on your iOS devices
 
 ## Contribution
 
-- Feedback and [issues](https://github.com/ethanhuang13/fathom/issues/new) are welcome.
+- Feedback and [issues](https://github.com/shepting/fathom/issues/new) are welcome.
