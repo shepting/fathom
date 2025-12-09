@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Elaborapp Co., Ltd. built the Knil app. This SERVICE is provided by Elaborapp Co., Ltd. and is intended for use as is.
+Elaborapp Co., Ltd. built the Fathom app. This SERVICE is provided by Elaborapp Co., Ltd. and is intended for use as is.
 
 This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
 
