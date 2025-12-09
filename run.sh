@@ -8,7 +8,7 @@ SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 BUNDLE_ID="com.hepting.Fathom"
 SCRIPT_DIR="$(dirname "$0")"
-BUILD_LOG="$SCRIPT_DIR/build.log"
+BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
 
 # Detect available iPhone 16 simulator (extract UUID which is the first parenthesized group)
 SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | grep -v "Pro\|Plus" | head -1 | sed 's/.*(\([A-F0-9-]*\)).*/\1/')

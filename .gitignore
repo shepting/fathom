@@ -36,5 +36,5 @@ rvm.env
 
 ## Logs
 simulator.log
-build.log
+xcodebuild.log
 .DS_Store
