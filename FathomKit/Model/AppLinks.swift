@@ -13,6 +13,12 @@ public enum AASAFormat {
     case modern    // Uses "components" key (WWDC 2019)
 }
 
+/// Used to decode legacy dictionary format where details is keyed by app ID
+struct LegacyAppDetail: Codable {
+    let paths: [AppPath]?
+    let components: [URLComponent]?
+}
+
 public struct AppLinks: Codable {
     /// The apps key in an apple-app-site-association file must be present and its value must be an empty array
     public let apps: [AppID]?
@@ -28,7 +34,16 @@ public struct AppLinks: Codable {
 
         apps = try values.decodeIfPresent([AppID].self, forKey: .apps)
 
-        details = try values.decode([AppDetail].self, forKey: .details)
-
+        // Try to decode as array first (modern format)
+        if let arrayDetails = try? values.decode([AppDetail].self, forKey: .details) {
+            details = arrayDetails
+        } else {
+            // Fall back to dictionary format (legacy format where keys are app IDs)
+            let dictDetails = try values.decode([String: LegacyAppDetail].self, forKey: .details)
+            details = dictDetails.compactMap { (appIDString, detail) in
+                guard let appID = AppID(string: appIDString) else { return nil }
+                return AppDetail(appID: appID, paths: detail.paths, components: detail.components)
+            }
+        }
     }
 }
