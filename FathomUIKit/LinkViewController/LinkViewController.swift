@@ -44,8 +44,12 @@ class LinkViewController: UITableViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             if let allPaths = self.userApp.paths {
-                // Sort paths so excluded (NOT) items appear at the bottom
-                let sortedPaths = allPaths.sorted { !$0.excluded && $1.excluded }
+                // Sort paths: exact paths first, wildcards (*) in middle, excluded (NOT) at bottom
+                let sortedPaths = allPaths.sorted { path1, path2 in
+                    let rank1 = path1.excluded ? 2 : (path1.pathString.hasSuffix("*") ? 1 : 0)
+                    let rank2 = path2.excluded ? 2 : (path2.pathString.hasSuffix("*") ? 1 : 0)
+                    return rank1 < rank2
+                }
                 let rows = sortedPaths.map { path in
                     TableViewCellViewModel(
                         title: path.cellTitle,
