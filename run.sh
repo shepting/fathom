@@ -15,6 +15,11 @@ LOG_FILE="$SCRIPT_DIR/simulator.log"
 
 echo "Using simulator: $SIMULATOR"
 
+if ! command -v xcbeautify &> /dev/null; then
+    echo "Installing xcbeautify..."
+    brew install xcbeautify
+fi
+
 echo "Building $SCHEME..."
 echo "Build log: $BUILD_LOG"
 xcodebuild -project "$PROJECT" \
