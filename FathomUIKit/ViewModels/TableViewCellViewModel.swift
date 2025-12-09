@@ -10,6 +10,7 @@ import UIKit
 
 typealias UIViewControllerClosure = () -> UIViewController?
 public typealias Closure = () -> Void
+public typealias SwipeActionsProvider = () -> [UIContextualAction]
 
 public struct TableViewCellViewModel {
     let title: String
@@ -19,7 +20,7 @@ public struct TableViewCellViewModel {
     let cellStyle: UITableViewCell.CellStyle
     let selectionStyle: UITableViewCell.SelectionStyle
     let accessoryType: UITableViewCell.AccessoryType
-    let editActions: [UITableViewRowAction]
+    let swipeActionsProvider: SwipeActionsProvider?
     var selectAction: Closure
     var detailAction: Closure
 
@@ -29,7 +30,7 @@ public struct TableViewCellViewModel {
                 cellStyle: UITableViewCell.CellStyle = .default,
                 selectionStyle: UITableViewCell.SelectionStyle = .default,
                 accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator,
-                editActions: [UITableViewRowAction] = [],
+                swipeActionsProvider: SwipeActionsProvider? = nil,
                 selectAction: @escaping Closure = {},
                 detailAction: @escaping Closure = {}
         ) {
@@ -40,7 +41,7 @@ public struct TableViewCellViewModel {
         self.reuseIdentifier = String(cellStyle.rawValue)
         self.selectionStyle = selectionStyle
         self.accessoryType = accessoryType
-        self.editActions = editActions
+        self.swipeActionsProvider = swipeActionsProvider
         self.selectAction = selectAction
         self.detailAction = detailAction
     }

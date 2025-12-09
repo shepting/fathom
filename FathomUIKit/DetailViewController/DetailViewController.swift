@@ -11,7 +11,7 @@ import FathomKit
 import StoreKit
 import SafariServices
 
-protocol DetailViewControllerDelegate: class {
+protocol DetailViewControllerDelegate: AnyObject {
     func update(_ userAASA: UserAASA)
 }
 
@@ -111,12 +111,14 @@ class DetailViewController: UITableViewController {
             let url = pair.key
             let cellTitle = pair.value.isEmpty ? "(No Title)".localized() : pair.value
 
-            let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete".localized(), handler: { (_, _) in
-                userAASA.customURLs.removeValue(forKey: pair.key)
-                self.reloadData()
-            })
-
-            return TableViewCellViewModel(title: cellTitle, subtitle: url.relativePathAndQuery, cellStyle: .subtitle, accessoryType: .detailDisclosureButton, editActions: [deleteAction], selectAction: {
+            return TableViewCellViewModel(title: cellTitle, subtitle: url.relativePathAndQuery, cellStyle: .subtitle, accessoryType: .detailDisclosureButton, swipeActionsProvider: {
+                let deleteAction = UIContextualAction(style: .destructive, title: "Delete".localized()) { _, _, completionHandler in
+                    userAASA.customURLs.removeValue(forKey: pair.key)
+                    self.reloadData()
+                    completionHandler(true)
+                }
+                return [deleteAction]
+            }, selectAction: {
                 _ = self.urlOpener?.openURL(url)
             }, detailAction: {
                 self.composeLink(url, title: pair.value)
