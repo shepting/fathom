@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/github/license/shepting/fathom.svg)](https://github.com/shepting/fathom/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/badge/Twitter-%40stevenhepting-blue.svg)](https://twitter.com/stevenhepting)
 
-[![](App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
+[![](Resources/App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
 
 Fathom made Universal Links testing easier. It fetches and parses apple-app-site-association file for you to quickly check whether Universal Links are working.
 
@@ -15,7 +15,7 @@ Fathom made Universal Links testing easier. It fetches and parses apple-app-site
 
 Add websites, download related apps, test Universal Links, and customize test links.
 
-![Demo of user add IMDb to Fathom and test its Universal Links.](demo.gif)
+![Demo of user add IMDb to Fathom and test its Universal Links.](Resources/demo.gif)
 
 ## Features
 
@@ -77,7 +77,7 @@ Key differences in the modern format:
 
 ## Install
 
-[![](App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
+[![](Resources/App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
 
 Download the official release version from [App Store](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README).
 
