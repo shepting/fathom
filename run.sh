@@ -25,12 +25,21 @@ echo "Cleaning extended attributes (iCloud workaround)..."
 xattr -cr . 2>/dev/null || true
 
 echo "Building $SCHEME..."
-xcodebuild -project "$PROJECT" \
-    -scheme "$SCHEME" \
-    -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,id=$SIMULATOR" \
-    -derivedDataPath "$BUILD_DIR" \
-    build
+if command -v xcbeautify &> /dev/null; then
+    xcodebuild -project "$PROJECT" \
+        -scheme "$SCHEME" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,id=$SIMULATOR" \
+        -derivedDataPath "$BUILD_DIR" \
+        build 2>&1 | xcbeautify
+else
+    xcodebuild -project "$PROJECT" \
+        -scheme "$SCHEME" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,id=$SIMULATOR" \
+        -derivedDataPath "$BUILD_DIR" \
+        build
+fi
 
 echo "Booting simulator..."
 xcrun simctl boot "$SIMULATOR" 2>/dev/null || true

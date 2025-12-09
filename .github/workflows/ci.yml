@@ -64,9 +64,7 @@ jobs:
         run: brew install xcbeautify
 
       - name: Build and run app
-        run: |
-          set -o pipefail
-          ./run.sh 2>&1 | tee run.log | xcbeautify
+        run: ./run.sh 2>&1 | tee run.log
 
       - name: Take screenshot
         run: ./screenshot.sh
