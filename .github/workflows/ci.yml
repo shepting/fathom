@@ -82,6 +82,19 @@ jobs:
           name: simulator-screenshot
           path: /tmp/simulator-screenshot.png
 
+      - name: Add screenshot to job summary
+        run: |
+          echo "## Simulator Screenshot" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "![Simulator Screenshot](../../../artifacts/simulator-screenshot/simulator-screenshot.png)" >> $GITHUB_STEP_SUMMARY
+          # Also add base64 inline image as fallback
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<details><summary>Screenshot (inline)</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "![Screenshot](data:image/png;base64,$(base64 -i /tmp/simulator-screenshot.png))" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+
   ui-tests:
     runs-on: macos-15
 
