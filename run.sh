@@ -28,21 +28,12 @@ xattr -cr . 2>/dev/null || true
 
 echo "Building $SCHEME..."
 echo "Build log: $BUILD_LOG"
-if command -v xcbeautify &> /dev/null; then
-    xcodebuild -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -sdk iphonesimulator \
-        -destination "platform=iOS Simulator,id=$SIMULATOR" \
-        -derivedDataPath "$BUILD_DIR" \
-        build 2>&1 | tee "$BUILD_LOG" | xcbeautify
-else
-    xcodebuild -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -sdk iphonesimulator \
-        -destination "platform=iOS Simulator,id=$SIMULATOR" \
-        -derivedDataPath "$BUILD_DIR" \
-        build 2>&1 | tee "$BUILD_LOG"
-fi
+xcodebuild -project "$PROJECT" \
+    -scheme "$SCHEME" \
+    -sdk iphonesimulator \
+    -destination "platform=iOS Simulator,id=$SIMULATOR" \
+    -derivedDataPath "$BUILD_DIR" \
+    build 2>&1 | tee "$BUILD_LOG" | xcbeautify
 
 echo "Booting simulator..."
 xcrun simctl boot "$SIMULATOR" 2>/dev/null || true
