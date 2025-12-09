@@ -64,8 +64,12 @@ public class TableViewViewModel: NSObject, UITableViewDataSource, UITableViewDel
         return .none
     }
 
-    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let cellViewModel = sections[indexPath.section].rows[indexPath.row]
-        return cellViewModel.editActions
+        guard let actionsProvider = cellViewModel.swipeActionsProvider else {
+            return nil
+        }
+        let actions = actionsProvider()
+        return UISwipeActionsConfiguration(actions: actions)
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 import FathomKit
 
-protocol ComposeLinkViewControllerDelegate: class {
+protocol ComposeLinkViewControllerDelegate: AnyObject {
     func saveLink(_ url: URL, title: String)
 }
 
@@ -114,11 +114,13 @@ class ComposeLinkViewController: UITableViewController {
         var pathRows: [TableViewCellViewModel] = []
 
         for (index, pathString) in self.urlComponents.pathComponents.enumerated() {
-            let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete".localized(), handler: { (_, _) in
-                self.deletePathComponent(index: index)
-            })
-
-            let pathRow = TableViewCellViewModel(title: "/" + pathString, editActions: [deleteAction], selectAction: {
+            let pathRow = TableViewCellViewModel(title: "/" + pathString, swipeActionsProvider: {
+                let deleteAction = UIContextualAction(style: .destructive, title: "Delete".localized()) { _, _, completionHandler in
+                    self.deletePathComponent(index: index)
+                    completionHandler(true)
+                }
+                return [deleteAction]
+            }, selectAction: {
                 self.editPathComponent(index: index)
             })
             pathRows.append(pathRow)
@@ -137,11 +139,13 @@ class ComposeLinkViewController: UITableViewController {
     private var querySection: TableViewSectionViewModel {
         var queryRows: [TableViewCellViewModel] = []
         for (index, queryItem) in (self.urlComponents.queryItems ?? []).enumerated() {
-            let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete".localized(), handler: { (_, _) in
-                self.deleteQuery(index: index)
-            })
-
-            let queryRow = TableViewCellViewModel(title: "\(queryItem.name)=\(queryItem.value ?? "")", editActions: [deleteAction], selectAction: {
+            let queryRow = TableViewCellViewModel(title: "\(queryItem.name)=\(queryItem.value ?? "")", swipeActionsProvider: {
+                let deleteAction = UIContextualAction(style: .destructive, title: "Delete".localized()) { _, _, completionHandler in
+                    self.deleteQuery(index: index)
+                    completionHandler(true)
+                }
+                return [deleteAction]
+            }, selectAction: {
                 self.editQuery(index: index)
             })
             queryRows.append(queryRow)

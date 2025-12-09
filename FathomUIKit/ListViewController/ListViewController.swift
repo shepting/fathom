@@ -56,12 +56,14 @@ public class ListViewController: UITableViewController {
             self.presentAddingAASAAlertController()
         })
         let rows: [TableViewCellViewModel] = self.dataStore.list(sortedBy: .fetchedDate).map { userAASA in
-            let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete".localized(), handler: { (_, _) in
-                self.dataStore.remove(userAASA)
-                self.reloadData()
-            })
-
-            let row = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: userAASA.cellSubtitle, cellStyle: .subtitle, selectionStyle: .default, editActions: [deleteAction], selectAction: {
+            let row = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: userAASA.cellSubtitle, cellStyle: .subtitle, selectionStyle: .default, swipeActionsProvider: {
+                let deleteAction = UIContextualAction(style: .destructive, title: "Delete".localized()) { _, _, completionHandler in
+                    self.dataStore.remove(userAASA)
+                    self.reloadData()
+                    completionHandler(true)
+                }
+                return [deleteAction]
+            }, selectAction: {
                 self.showDetailViewController(userAASA: userAASA)
             })
             return row
