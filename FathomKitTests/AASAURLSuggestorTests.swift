@@ -56,7 +56,6 @@ class AASAURLSuggestorTests: XCTestCase {
             "foursquare.com",
             "www.dropbox.com",
             "www.airbnb.com",
-            "www.periscope.tv",
             "www.google.com",
             "medium.com",
             "overcast.fm",
@@ -68,7 +67,10 @@ class AASAURLSuggestorTests: XCTestCase {
             "linkedin.com",
             "open.spotify.com",
             "soundcloud.com",
-            "www.patreon.com" // Redirected to /.well-known/
+            "www.patreon.com",
+            "www.tiktok.com",
+            "www.whatsapp.com",
+            "www.uber.com"
         ]
         let expectations = hosts.map { XCTestExpectation(description: $0) }
 
@@ -83,6 +85,6 @@ class AASAURLSuggestorTests: XCTestCase {
             }
         }
 
-        wait(for: expectations, timeout: 10.0)
+        wait(for: expectations, timeout: 30.0)
     }
 }

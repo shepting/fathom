@@ -10,6 +10,7 @@ jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, macos-15]
 
@@ -50,6 +51,11 @@ jobs:
           name: test-results-${{ matrix.os }}
           path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
 
+      - name: Post log link annotation
+        if: always()
+        run: |
+          echo "::notice title=Build Log::View full build log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
   screenshot:
     runs-on: macos-latest
 
@@ -79,6 +85,11 @@ jobs:
       - name: Add screenshot to job summary
         run: ./.github/add-screenshot-summary.sh /tmp/simulator-screenshot.png
 
+      - name: Post log link annotation
+        if: always()
+        run: |
+          echo "::notice title=Screenshot Build Log::View full build log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
   ui-tests:
     runs-on: macos-latest
 
@@ -102,3 +113,8 @@ jobs:
         with:
           name: ui-test-results
           path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+
+      - name: Post log link annotation
+        if: always()
+        run: |
+          echo "::notice title=UI Test Log::View full build log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
