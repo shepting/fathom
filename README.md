@@ -5,6 +5,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/shepting/fathom.svg)
 ![](https://img.shields.io/badge/Platform-iOS%2015.6%2B-lightgrey.svg)
 [![License](https://img.shields.io/github/license/shepting/fathom.svg)](https://github.com/shepting/fathom/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/badge/Twitter-%40stevenhepting-blue.svg)](https://twitter.com/stevenhepting)
 
 [![](App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
 
