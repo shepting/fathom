@@ -8,14 +8,14 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Show Xcode version
         run: xcodebuild -version
@@ -23,14 +23,25 @@ jobs:
       - name: List available simulators
         run: xcrun simctl list devices available
 
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+
       - name: Build and Test
         run: |
+          set -o pipefail
           xcodebuild \
             -project Fathom.xcodeproj \
             -scheme Fathom \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
-            clean test
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+            clean test 2>&1 | tee xcodebuild.log | xcbeautify
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-and-test-log
+          path: xcodebuild.log
 
       - name: Upload test results
         if: failure()
@@ -40,20 +51,32 @@ jobs:
           path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
 
   screenshot:
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Install xcbeautify
+        run: brew install xcbeautify
 
       - name: Build and run app
-        run: ./run.sh
+        run: |
+          set -o pipefail
+          ./run.sh 2>&1 | tee run.log | xcbeautify
 
       - name: Take screenshot
         run: ./screenshot.sh
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-build-log
+          path: run.log
 
       - name: Upload screenshot
         uses: actions/upload-artifact@v4
@@ -62,14 +85,14 @@ jobs:
           path: /tmp/simulator-screenshot.png
 
   ui-tests:
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Boot simulator
         run: |
@@ -81,7 +104,7 @@ jobs:
             -project Fathom.xcodeproj \
             -scheme Fathom \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
             -only-testing:FathomUITests \
             test
 
