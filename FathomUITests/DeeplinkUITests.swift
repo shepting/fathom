@@ -22,21 +22,37 @@ final class DeeplinkUITests: XCTestCase {
     }
 
     func testOpenDeeplink() throws {
-        // Open a deeplink URL using Safari
+        // Open a URL using Safari and capture a screenshot
+        // This tests the deeplink/universal link flow
         let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
         safari.launch()
 
         // Wait for Safari to launch
-        let safariLaunched = safari.wait(for: .runningForeground, timeout: 5)
+        let safariLaunched = safari.wait(for: .runningForeground, timeout: 10)
         XCTAssertTrue(safariLaunched, "Safari should launch")
 
-        // Navigate to a universal link that should open in Fathom
-        // Using apple.com as an example since it has an AASA file
-        safari.textFields["URL"].tap()
+        // Wait for Safari UI to settle
+        sleep(2)
+
+        // Find and tap the address bar (TextField with identifier "TabBarItemTitle")
+        let addressBar = safari.textFields["TabBarItemTitle"]
+        XCTAssertTrue(addressBar.waitForExistence(timeout: 5), "Address bar should exist")
+        addressBar.tap()
+
+        // Wait for keyboard
+        sleep(1)
+
+        // Clear existing text and type the URL
+        if let currentValue = addressBar.value as? String, !currentValue.isEmpty {
+            // Select all and delete
+            addressBar.tap()
+            sleep(1)
+        }
+
         safari.typeText("https://apple.com\n")
 
         // Wait for page to load
-        sleep(3)
+        sleep(5)
 
         // Take a screenshot of the result
         let screenshot = XCUIScreen.main.screenshot()

@@ -9,7 +9,7 @@
 import UIKit
 import FathomKit
 
-protocol LinkViewControllerDelegate: class {
+protocol LinkViewControllerDelegate: AnyObject {
     func duplicateLinkAndCompose(_ url: URL)
 }
 

@@ -6,8 +6,17 @@ set -e
 
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
-SIMULATOR="iPhone 16"
 BUNDLE_ID="com.hepting.Fathom"
+
+# Detect available iPhone 16 simulator
+SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | head -1 | sed 's/.*(\([^)]*\)).*/\1/')
+if [ -z "$SIMULATOR" ]; then
+    echo "Error: No iPhone 16 simulator found"
+    xcrun simctl list devices available
+    exit 1
+fi
+SIMULATOR_NAME="iPhone 16"
+echo "Using simulator: $SIMULATOR_NAME ($SIMULATOR)"
 # Use /tmp for build output to avoid iCloud extended attributes issues
 BUILD_DIR="/tmp/fathom-build"
 LOG_FILE="$(dirname "$0")/simulator.log"
@@ -19,7 +28,7 @@ echo "Building $SCHEME..."
 xcodebuild -project "$PROJECT" \
     -scheme "$SCHEME" \
     -sdk iphonesimulator \
-    -destination "platform=iOS Simulator,name=$SIMULATOR" \
+    -destination "platform=iOS Simulator,id=$SIMULATOR" \
     -derivedDataPath "$BUILD_DIR" \
     build
 
