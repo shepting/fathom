@@ -31,3 +31,25 @@ jobs:
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
             clean test
+
+  screenshot:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Build and run app
+        run: ./run.sh
+
+      - name: Take screenshot
+        run: ./screenshot.sh
+
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulator-screenshot
+          path: /tmp/simulator-screenshot.png
