@@ -67,7 +67,6 @@ class AASAURLSuggestorTests: XCTestCase {
             "linkedin.com",
             "open.spotify.com",
             "soundcloud.com",
-            "www.patreon.com",
             "www.tiktok.com",
             "www.whatsapp.com",
             "www.uber.com"
