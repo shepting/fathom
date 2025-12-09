@@ -7,9 +7,23 @@ set -e
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 BUNDLE_ID="com.hepting.Fathom"
+BUILD_LOG=""
 
-# Detect available iPhone 16 simulator
-SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | head -1 | sed 's/.*(\([^)]*\)).*/\1/')
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --log)
+            BUILD_LOG="$2"
+            shift 2
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
+# Detect available iPhone 16 simulator (extract UUID which is the first parenthesized group)
+SIMULATOR=$(xcrun simctl list devices available | grep "iPhone 16" | grep -v "Pro\|Plus" | head -1 | sed 's/.*(\([A-F0-9-]*\)).*/\1/')
 if [ -z "$SIMULATOR" ]; then
     echo "Error: No iPhone 16 simulator found"
     xcrun simctl list devices available
@@ -25,7 +39,24 @@ echo "Cleaning extended attributes (iCloud workaround)..."
 xattr -cr . 2>/dev/null || true
 
 echo "Building $SCHEME..."
-if command -v xcbeautify &> /dev/null; then
+if [ -n "$BUILD_LOG" ] && command -v xcbeautify &> /dev/null; then
+    # Log to file and pipe through xcbeautify
+    xcodebuild -project "$PROJECT" \
+        -scheme "$SCHEME" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,id=$SIMULATOR" \
+        -derivedDataPath "$BUILD_DIR" \
+        build 2>&1 | tee "$BUILD_LOG" | xcbeautify
+elif [ -n "$BUILD_LOG" ]; then
+    # Log to file without xcbeautify
+    xcodebuild -project "$PROJECT" \
+        -scheme "$SCHEME" \
+        -sdk iphonesimulator \
+        -destination "platform=iOS Simulator,id=$SIMULATOR" \
+        -derivedDataPath "$BUILD_DIR" \
+        build 2>&1 | tee "$BUILD_LOG"
+elif command -v xcbeautify &> /dev/null; then
+    # xcbeautify only
     xcodebuild -project "$PROJECT" \
         -scheme "$SCHEME" \
         -sdk iphonesimulator \
@@ -33,6 +64,7 @@ if command -v xcbeautify &> /dev/null; then
         -derivedDataPath "$BUILD_DIR" \
         build 2>&1 | xcbeautify
 else
+    # Plain xcodebuild
     xcodebuild -project "$PROJECT" \
         -scheme "$SCHEME" \
         -sdk iphonesimulator \
