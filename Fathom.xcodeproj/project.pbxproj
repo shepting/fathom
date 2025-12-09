@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E2B95018D8D427C8B7DD46F /* DeeplinkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F6F35D89E4F9D9CCA309F /* DeeplinkUITests.swift */; };
 		6C0D219320E0F2A700FBFA86 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0D219220E0F2A700FBFA86 /* AppDelegate.swift */; };
 		6C0D219A20E0F2A800FBFA86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C0D219920E0F2A800FBFA86 /* Assets.xcassets */; };
 		6C0D219D20E0F2A800FBFA86 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C0D219B20E0F2A800FBFA86 /* LaunchScreen.storyboard */; };
@@ -73,10 +74,16 @@
 		6CEFF19D20FDF6D20087BD79 /* AppPath+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEFF19C20FDF6D20087BD79 /* AppPath+Extension.swift */; };
 		6CEFF1A020FDFB0E0087BD79 /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CEFF19F20FDFB0E0087BD79 /* LinkViewController.swift */; };
 		C4725239331B4F1DA1AACFAD /* URLComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9D336132E34D709D380317 /* URLComponent.swift */; };
-		1E2B95018D8D427C8B7DD46F /* DeeplinkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C23F6F35D89E4F9D9CCA309F /* DeeplinkUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		244844A17CBE49BF82E93C54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6C0D218720E0F2A600FBFA86 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6C0D218E20E0F2A600FBFA86;
+			remoteInfo = Fathom;
+		};
 		6C0D21E720E0F6B000FBFA86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6C0D218720E0F2A600FBFA86 /* Project object */;
@@ -119,13 +126,6 @@
 			remoteGlobalIDString = 6C0D21FF20E0F6B900FBFA86;
 			remoteInfo = FathomKit;
 		};
-		244844A17CBE49BF82E93C54 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6C0D218720E0F2A600FBFA86 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C0D218E20E0F2A600FBFA86;
-			remoteInfo = Fathom;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -145,6 +145,7 @@
 
 /* Begin PBXFileReference section */
 		1D9D336132E34D709D380317 /* URLComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponent.swift; sourceTree = "<group>"; };
+		22BF2F71C53B4642A257B183 /* FathomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FathomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C0D218F20E0F2A700FBFA86 /* Fathom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fathom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C0D219220E0F2A700FBFA86 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C0D219920E0F2A800FBFA86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -213,12 +214,18 @@
 		6CEFF19820FDD42E0087BD79 /* UserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserApp.swift; sourceTree = "<group>"; };
 		6CEFF19C20FDF6D20087BD79 /* AppPath+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppPath+Extension.swift"; sourceTree = "<group>"; };
 		6CEFF19F20FDFB0E0087BD79 /* LinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewController.swift; sourceTree = "<group>"; };
-		22BF2F71C53B4642A257B183 /* FathomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FathomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C23F6F35D89E4F9D9CCA309F /* DeeplinkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkUITests.swift; sourceTree = "<group>"; };
 		E60F2E15217E48EA8AD9027A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4CC75116CAA94F2C8B51633A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6C0D218C20E0F2A600FBFA86 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,16 +266,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4CC75116CAA94F2C8B51633A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1EF665FD9A4843B1B5C2CD0E /* FathomUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C23F6F35D89E4F9D9CCA309F /* DeeplinkUITests.swift */,
+				E60F2E15217E48EA8AD9027A /* Info.plist */,
+			);
+			path = FathomUITests;
+			sourceTree = "<group>";
+		};
 		6C0D218620E0F2A600FBFA86 = {
 			isa = PBXGroup;
 			children = (
@@ -514,15 +523,6 @@
 			path = LinkViewController;
 			sourceTree = "<group>";
 		};
-		1EF665FD9A4843B1B5C2CD0E /* FathomUITests */ = {
-			isa = PBXGroup;
-			children = (
-				C23F6F35D89E4F9D9CCA309F /* DeeplinkUITests.swift */,
-				E60F2E15217E48EA8AD9027A /* Info.plist */,
-			);
-			path = FathomUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -543,6 +543,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		028442327FBF40CF89629875 /* FathomUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68EB79B64CBB4DE9BBB9012C /* Build configuration list for PBXNativeTarget "FathomUITests" */;
+			buildPhases = (
+				FCF51BD715254BAFAB923F30 /* Sources */,
+				4CC75116CAA94F2C8B51633A /* Frameworks */,
+				8166782BC6A94075A4D88CC5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				045BD598717B40BC89487B61 /* PBXTargetDependency */,
+			);
+			name = FathomUITests;
+			productName = FathomUITests;
+			productReference = 22BF2F71C53B4642A257B183 /* FathomUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		6C0D218E20E0F2A600FBFA86 /* Fathom */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6C0D21B720E0F2A900FBFA86 /* Build configuration list for PBXNativeTarget "Fathom" */;
@@ -637,24 +655,6 @@
 			productReference = 6C0D220820E0F6B900FBFA86 /* FathomKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		028442327FBF40CF89629875 /* FathomUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 68EB79B64CBB4DE9BBB9012C /* Build configuration list for PBXNativeTarget "FathomUITests" */;
-			buildPhases = (
-				FCF51BD715254BAFAB923F30 /* Sources */,
-				4CC75116CAA94F2C8B51633A /* Frameworks */,
-				8166782BC6A94075A4D88CC5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				045BD598717B40BC89487B61 /* PBXTargetDependency */,
-			);
-			name = FathomUITests;
-			productName = FathomUITests;
-			productReference = 22BF2F71C53B4642A257B183 /* FathomUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -666,6 +666,10 @@
 				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = "Elaborapp Co., Ltd.";
 				TargetAttributes = {
+					028442327FBF40CF89629875 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 6C0D218E20E0F2A600FBFA86;
+					};
 					6C0D218E20E0F2A600FBFA86 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
@@ -685,10 +689,6 @@
 					6C0D220720E0F6B900FBFA86 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
-						TestTargetID = 6C0D218E20E0F2A600FBFA86;
-					};
-					028442327FBF40CF89629875 = {
-						CreatedOnToolsVersion = 15.0;
 						TestTargetID = 6C0D218E20E0F2A600FBFA86;
 					};
 				};
@@ -867,6 +867,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		045BD598717B40BC89487B61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6C0D218E20E0F2A600FBFA86 /* Fathom */;
+			targetProxy = 244844A17CBE49BF82E93C54 /* PBXContainerItemProxy */;
+		};
 		6C0D21E820E0F6B000FBFA86 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6C0D21DC20E0F6B000FBFA86 /* FathomUIKit */;
@@ -896,11 +901,6 @@
 			isa = PBXTargetDependency;
 			target = 6C0D21FF20E0F6B900FBFA86 /* FathomKit */;
 			targetProxy = 6C0D221320E0F6B900FBFA86 /* PBXContainerItemProxy */;
-		};
-		045BD598717B40BC89487B61 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6C0D218E20E0F2A600FBFA86 /* Fathom */;
-			targetProxy = 244844A17CBE49BF82E93C54 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1042,6 +1042,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F22HRTHN84;
 				INFOPLIST_FILE = "$(SRCROOT)/Fathom/Resources/Fathom-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1062,6 +1063,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F22HRTHN84;
 				INFOPLIST_FILE = "$(SRCROOT)/Fathom/Resources/Fathom-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1080,11 +1082,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomUIKit/FathomUIKit-Info.plist";
@@ -1111,11 +1113,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomUIKit/FathomUIKit-Info.plist";
@@ -1180,11 +1182,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomKit/FathomKit-Info.plist";
@@ -1211,11 +1213,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomKit/FathomKit-Info.plist";
@@ -1274,33 +1276,11 @@
 			};
 			name = Release;
 		};
-		C1192467D25747E5889A00AB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F22HRTHN84;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FathomUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.hepting.FathomUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Fathom;
-			};
-			name = Debug;
-		};
 		BC0DBC3003C84BC8A8F8B3A7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = F22HRTHN84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FathomUITests/Info.plist;
@@ -1309,7 +1289,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hepting.FathomUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1318,9 +1298,40 @@
 			};
 			name = Release;
 		};
+		C1192467D25747E5889A00AB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 12;
+				DEVELOPMENT_TEAM = F22HRTHN84;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FathomUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hepting.FathomUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Fathom;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		68EB79B64CBB4DE9BBB9012C /* Build configuration list for PBXNativeTarget "FathomUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C1192467D25747E5889A00AB /* Debug */,
+				BC0DBC3003C84BC8A8F8B3A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6C0D218A20E0F2A600FBFA86 /* Build configuration list for PBXProject "Fathom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1371,15 +1382,6 @@
 			buildConfigurations = (
 				6C0D221B20E0F6B900FBFA86 /* Debug */,
 				6C0D221C20E0F6B900FBFA86 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		68EB79B64CBB4DE9BBB9012C /* Build configuration list for PBXNativeTarget "FathomUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C1192467D25747E5889A00AB /* Debug */,
-				BC0DBC3003C84BC8A8F8B3A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

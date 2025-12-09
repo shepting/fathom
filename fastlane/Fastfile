@@ -3,39 +3,62 @@ default_platform(:ios)
 platform :ios do
   desc "Build and upload to TestFlight"
   lane :beta do
-    build_app(
+    # Archive the app
+    gym(
       scheme: "Fathom",
       export_method: "app-store",
+      export_options: {
+        signingStyle: "automatic",
+        signingCertificate: "Apple Distribution",
+        manageAppVersionAndBuildNumber: false
+      },
       output_directory: "./build",
-      output_name: "Fathom.ipa"
+      output_name: "Fathom.ipa",
+      clean: true,
+      skip_package_ipa: false,
+      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
     )
     upload_to_testflight(
-      skip_waiting_for_build_processing: true
+      skip_waiting_for_build_processing: true,
+      ipa: "./build/Fathom.ipa"
     )
   end
 
   desc "Build and upload to App Store"
   lane :release do
-    build_app(
+    gym(
       scheme: "Fathom",
       export_method: "app-store",
+      export_options: {
+        signingStyle: "automatic",
+        signingCertificate: "Apple Distribution",
+        manageAppVersionAndBuildNumber: false
+      },
       output_directory: "./build",
-      output_name: "Fathom.ipa"
+      output_name: "Fathom.ipa",
+      clean: true,
+      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
     )
     upload_to_app_store(
       skip_screenshots: true,
       skip_metadata: true,
-      precheck_include_in_app_purchases: false
+      precheck_include_in_app_purchases: false,
+      ipa: "./build/Fathom.ipa"
     )
   end
 
   desc "Build only (no upload)"
   lane :build do
-    build_app(
+    gym(
       scheme: "Fathom",
       export_method: "app-store",
+      export_options: {
+        signingStyle: "automatic",
+        signingCertificate: "Apple Distribution"
+      },
       output_directory: "./build",
-      output_name: "Fathom.ipa"
+      output_name: "Fathom.ipa",
+      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
     )
   end
 end
