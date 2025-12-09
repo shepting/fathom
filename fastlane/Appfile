@@ -1,0 +1,9 @@
+app_identifier("com.hepting.Fathom")
+apple_id(ENV["APPLE_ID"])
+team_id(ENV["TEAM_ID"])
+
+for_platform :ios do
+  for_lane :release do
+    app_identifier("com.hepting.Fathom")
+  end
+end
