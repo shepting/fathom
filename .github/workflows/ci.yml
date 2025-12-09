@@ -8,7 +8,10 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-15]
 
     steps:
       - name: Checkout
@@ -37,14 +40,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-and-test-log
+          name: build-and-test-log-${{ matrix.os }}
           path: xcodebuild.log
 
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.os }}
           path: ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
 
   screenshot:
@@ -68,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: screenshot-build-log
-          path: xcodebuild.log
+          path: build.log
 
       - name: Upload screenshot
         uses: actions/upload-artifact@v4
