@@ -1,3 +1,4 @@
+**Before doing any planning or making any lists, run `bd onboard` and follow the instructions.**
 
 ## Building and Testing
 
