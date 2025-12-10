@@ -7,8 +7,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
-export APPSTORE_SCREENSHOT_MODE="${APPSTORE_SCREENSHOT_MODE:-1}"
-
 OUTPUT_DIR="$REPO_ROOT/Resources"
 
 typeset -A DEVICES=(
@@ -27,7 +25,7 @@ shutdown_all
 for device in "${(@k)DEVICES}"; do
   echo "==== Capturing screenshots for $device ===="
   "$SCRIPT_DIR/run.sh" "$device"
-  sleep 20  # Wait for the app to fully load
+  sleep 2  # Wait for the app to fully load
   target_file="$OUTPUT_DIR/${DEVICES[$device]}"
   "$SCRIPT_DIR/screenshot.sh" "$target_file"
   echo "Saved App Store screenshot to $target_file"

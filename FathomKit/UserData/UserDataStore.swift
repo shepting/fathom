@@ -62,22 +62,12 @@ public class UserDataStore {
     }
 
     private var seedHostnames: [String] {
-        if UserDataStore.isScreenshotModeEnabled {
-            return [
-                "www.airbnb.com",
-                "www.instagram.com",
-                "www.spotify.com",
-                "www.uber.com"
-            ]
-        }
-        return ["www.airbnb.com", "akamai-staging.airbnb.com"]
-    }
-
-    private static var isScreenshotModeEnabled: Bool {
-        if let value = ProcessInfo.processInfo.environment["APPSTORE_SCREENSHOT_MODE"] {
-            return (value as NSString).boolValue || value.lowercased() == "true"
-        }
-        return false
+        return [
+            "www.airbnb.com",
+            "www.instagram.com",
+            "www.spotify.com",
+            "www.uber.com"
+        ]
     }
 
     public func archive() {

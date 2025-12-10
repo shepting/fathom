@@ -65,9 +65,6 @@ echo "" > "$LOG_FILE"
 
 echo "Launching app with console output (writing to $LOG_FILE)..."
 launch_command="xcrun simctl launch --console-pty \"$SIMULATOR\""
-if [[ -n "${APPSTORE_SCREENSHOT_MODE:-}" ]]; then
-    launch_command+=" -e APPSTORE_SCREENSHOT_MODE '$APPSTORE_SCREENSHOT_MODE'"
-fi
 launch_command+=" \"$BUNDLE_ID\""
 system_and_log "$launch_command >> \"$LOG_FILE\" &"
 
