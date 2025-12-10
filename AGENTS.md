@@ -33,3 +33,11 @@ To follow logs in real-time (in a separate terminal):
 ```bash
 tail -f simulator.log
 ```
+
+To stage App Store screenshots, run the helper (it automatically sets `APPSTORE_SCREENSHOT_MODE=1` so the app launches preloaded with Airbnb, Instagram, Spotify, and Uber):
+
+```bash
+./scripts/save_appstore_screenshots.sh
+```
+
+Images land in `fastlane/screenshots/en-US/` (gitignored).

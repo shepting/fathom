@@ -48,9 +48,7 @@ public class UserDataStore {
     private func seedDefaultsIfNeeded() {
         guard userAASAs.isEmpty else { return }
 
-        let defaultHostnames = ["www.airbnb.com", "akamai-staging.airbnb.com"]
-
-        for hostname in defaultHostnames {
+        for hostname in seedHostnames {
             AASAURLSuggestor.suggestAASA(from: hostname) { [weak self] result in
                 switch result {
                 case .value(let userAASA):
@@ -61,6 +59,25 @@ public class UserDataStore {
                 }
             }
         }
+    }
+
+    private var seedHostnames: [String] {
+        if UserDataStore.isScreenshotModeEnabled {
+            return [
+                "www.airbnb.com",
+                "www.instagram.com",
+                "www.spotify.com",
+                "www.uber.com"
+            ]
+        }
+        return ["www.airbnb.com", "akamai-staging.airbnb.com"]
+    }
+
+    private static var isScreenshotModeEnabled: Bool {
+        if let value = ProcessInfo.processInfo.environment["APPSTORE_SCREENSHOT_MODE"] {
+            return (value as NSString).boolValue || value.lowercased() == "true"
+        }
+        return false
     }
 
     public func archive() {

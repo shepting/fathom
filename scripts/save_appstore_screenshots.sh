@@ -7,6 +7,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
+export APPSTORE_SCREENSHOT_MODE="${APPSTORE_SCREENSHOT_MODE:-1}"
+
 OUTPUT_DIR="$REPO_ROOT/fastlane/screenshots/en-US"
 SCREENSHOT_PATH="/tmp/simulator-screenshot.png"
 
