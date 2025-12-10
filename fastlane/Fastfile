@@ -6,21 +6,10 @@ platform :ios do
     # Archive the app
     gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      export_options: {
-        signingStyle: "automatic",
-        signingCertificate: "Apple Distribution",
-        manageAppVersionAndBuildNumber: false
-      },
-      output_directory: "./build",
-      output_name: "Fathom.ipa",
-      clean: true,
-      skip_package_ipa: false,
-      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
+      export_method: "app-store"
     )
     upload_to_testflight(
-      skip_waiting_for_build_processing: true,
-      ipa: "./build/Fathom.ipa"
+      skip_waiting_for_build_processing: true
     )
   end
 
@@ -28,22 +17,12 @@ platform :ios do
   lane :release do
     gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      export_options: {
-        signingStyle: "automatic",
-        signingCertificate: "Apple Distribution",
-        manageAppVersionAndBuildNumber: false
-      },
-      output_directory: "./build",
-      output_name: "Fathom.ipa",
-      clean: true,
-      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
+      export_method: "app-store"
     )
     upload_to_app_store(
       skip_screenshots: true,
       skip_metadata: true,
-      precheck_include_in_app_purchases: false,
-      ipa: "./build/Fathom.ipa"
+      precheck_include_in_app_purchases: false
     )
   end
 
@@ -51,14 +30,7 @@ platform :ios do
   lane :build do
     gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      export_options: {
-        signingStyle: "automatic",
-        signingCertificate: "Apple Distribution"
-      },
-      output_directory: "./build",
-      output_name: "Fathom.ipa",
-      xcargs: "RSYNC_EXTENDED_ATTRIBUTES_FLAG=''"
+      export_method: "app-store"
     )
   end
 end
