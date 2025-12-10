@@ -60,6 +60,8 @@ pkill -f "simctl launch.*console" 2>/dev/null || true
 echo "Launching app with console output (writing to $LOG_FILE)..."
 system_and_log "xcrun simctl launch --console-pty \"$SIMULATOR\" \"$BUNDLE_ID\" >> \"$LOG_FILE\" 2>&1 &"
 APP_PID=$!
+# Detach so the app isn't killed when this script exits
+disown "$APP_PID" 2>/dev/null || true
 
 echo "Opening Simulator..."
 system_and_log "open -a Simulator"
