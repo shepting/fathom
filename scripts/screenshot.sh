@@ -8,7 +8,7 @@ set -euo pipefail  # Fail on errors
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
-OUTPUT_PATH="/tmp/simulator-screenshot.png"
+OUTPUT_PATH="${1:-/tmp/simulator-screenshot.png}"
 
 # Find the booted simulator UUID
 SIMULATOR=$(xcrun simctl list devices booted | grep -E "\([A-F0-9-]+\)" | head -1 | sed 's/.*(\([A-F0-9-]*\)).*/\1/')
@@ -29,7 +29,7 @@ echo "Taking screenshot..."
 # Try to take screenshot, with retries for CI environments
 for i in 1 2 3; do
     if xcrun simctl io "$SIMULATOR" screenshot "$OUTPUT_PATH" 2>/dev/null; then
-        echo "Screenshot saved to $OUTPUT_PATH"
+echo "Screenshot saved to $OUTPUT_PATH"
         exit 0
     fi
     echo "Attempt $i failed, waiting..."
