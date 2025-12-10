@@ -64,10 +64,10 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build and run app
-        run: ./run.sh
+        run: ./scripts/run.sh
 
       - name: Take screenshot
-        run: ./screenshot.sh
+        run: ./scripts/screenshot.sh
 
       - name: Upload build log
         if: always()
@@ -98,7 +98,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Run UI Tests
-        run: ./ui_test.sh
+        run: ./scripts/ui_test.sh
 
       - name: Upload build log
         if: always()

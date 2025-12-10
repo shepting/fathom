@@ -1,12 +1,19 @@
-#!/usr/bin/env bash
+#!/bin/zsh
+# shellcheck shell=bash
+
 set -euo pipefail
 
-# Ensure rbenv shims (Ruby 3.4.4 + bundler) are available if rbenv is installed.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$SCRIPT_DIR/common.sh"
+cd "$REPO_ROOT"
+
+log_info "Initializing rbenv (if available)..."
 if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
-# Fetch the Fastlane app-specific password from the login keychain.
+log_info "Fetching Fastlane app-specific password from keychain..."
 KEYCHAIN_SERVICE="fastlane_app_specific_password"
 KEYCHAIN_ACCOUNT="${PERSONAL_APPLE_ID:?PERSONAL_APPLE_ID environment variable is required}"
 FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
@@ -15,5 +22,5 @@ FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
   -a "$KEYCHAIN_ACCOUNT")
 export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD
 
-# Run the standard TestFlight upload lane (build + upload).
+log_info "Running Fastlane release lane..."
 bundle exec fastlane release "$@"
