@@ -6,11 +6,6 @@ PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUTPUT_DIR="$PROJECT_DIR/fastlane/screenshots/en-US"
 SCREENSHOT_PATH="/tmp/simulator-screenshot.png"
 
-declare -A TARGET_FILENAMES=(
-  ["iPhone 11 Pro Max"]=iPhone-65-1.png
-  ["iPad Pro 13-inch (M4)"]=iPad-13-1.png
-)
-
 DEVICES=(
   "iPhone 11 Pro Max"
   "iPad Pro 13-inch (M4)"
@@ -20,6 +15,20 @@ mkdir -p "$OUTPUT_DIR"
 
 slugify() {
   echo "$1" | tr ' ' '-' | tr '()' '__' | tr -cd 'A-Za-z0-9_\n-'
+}
+
+target_filename_for_device() {
+  case "$1" in
+    "iPhone 11 Pro Max")
+      echo "iPhone-65-1.png"
+      ;;
+    "iPad Pro 13-inch (M4)")
+      echo "iPad-13-1.png"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
 }
 
 shutdown_all() {
@@ -43,9 +52,9 @@ for device in "${DEVICES[@]}"; do
   cp "$SCREENSHOT_PATH" "$device_file"
   echo "Saved raw screenshot to $device_file"
 
-  if [[ -n "${TARGET_FILENAMES[$device]:-}" ]]; then
-    cp "$SCREENSHOT_PATH" "$OUTPUT_DIR/${TARGET_FILENAMES[$device]}"
-    echo "Saved App Store screenshot to $OUTPUT_DIR/${TARGET_FILENAMES[$device]}"
+  if target_name=$(target_filename_for_device "$device"); then
+    cp "$SCREENSHOT_PATH" "$OUTPUT_DIR/$target_name"
+    echo "Saved App Store screenshot to $OUTPUT_DIR/$target_name"
   fi
 
   shutdown_all
