@@ -8,7 +8,7 @@ fi
 
 # Fetch the Fastlane app-specific password from the login keychain.
 KEYCHAIN_SERVICE="fastlane_app_specific_password"
-KEYCHAIN_ACCOUNT="shepting@gmail.com"
+KEYCHAIN_ACCOUNT="${PERSONAL_APPLE_ID:?PERSONAL_APPLE_ID environment variable is required}"
 FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
   -w \
   -s "$KEYCHAIN_SERVICE" \

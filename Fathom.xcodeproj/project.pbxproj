@@ -144,6 +144,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F1C42BF2D3B59F000AE45B4 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		1D9D336132E34D709D380317 /* URLComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponent.swift; sourceTree = "<group>"; };
 		22BF2F71C53B4642A257B183 /* FathomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FathomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C0D218F20E0F2A700FBFA86 /* Fathom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fathom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -283,6 +284,7 @@
 			children = (
 				6C0D21D620E0F55300FBFA86 /* CHANGELOG.md */,
 				6C0D21D420E0F53500FBFA86 /* README.md */,
+				7F1C42BE2D3B59F000AE45B4 /* Config */,
 				6C0D219120E0F2A700FBFA86 /* Fathom */,
 				6C0D220120E0F6B900FBFA86 /* FathomKit */,
 				6C0D220E20E0F6B900FBFA86 /* FathomKitTests */,
@@ -305,6 +307,14 @@
 				22BF2F71C53B4642A257B183 /* FathomUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7F1C42BE2D3B59F000AE45B4 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				7F1C42BF2D3B59F000AE45B4 /* Shared.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		6C0D219120E0F2A700FBFA86 /* Fathom */ = {
@@ -918,6 +928,7 @@
 /* Begin XCBuildConfiguration section */
 		6C0D21B520E0F2A900FBFA86 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F1C42BF2D3B59F000AE45B4 /* Shared.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -980,6 +991,7 @@
 		};
 		6C0D21B620E0F2A900FBFA86 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F1C42BF2D3B59F000AE45B4 /* Shared.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1082,7 +1094,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1113,7 +1124,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1182,7 +1192,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1213,7 +1222,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1280,7 +1288,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = F22HRTHN84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FathomUITests/Info.plist;
@@ -1302,7 +1309,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = F22HRTHN84;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FathomUITests/Info.plist;

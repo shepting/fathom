@@ -1,0 +1,2 @@
+// Shared build settings for all targets
+CURRENT_PROJECT_VERSION = 12
