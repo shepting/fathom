@@ -15,6 +15,7 @@ SWIFT_VERSION = 5.0
 
 // Code signing
 CODE_SIGN_STYLE = Automatic
+DYLIB_INSTALL_NAME_BASE = @rpath
 
 // Runtime search paths
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/Frameworks
