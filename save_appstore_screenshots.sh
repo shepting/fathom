@@ -1,4 +1,5 @@
 #!/bin/zsh
+# shellcheck shell=bash
 
 set -euo pipefail
 
@@ -25,6 +26,7 @@ shutdown_all
 for device in "${(@k)DEVICES}"; do
   echo "==== Capturing screenshots for $device ===="
   "$PROJECT_DIR/run.sh" "$device"
+  sleep 20  # Wait for the app to fully load
   "$PROJECT_DIR/screenshot.sh"
 
   if [[ ! -s "$SCREENSHOT_PATH" ]]; then

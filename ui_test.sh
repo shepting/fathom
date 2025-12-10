@@ -1,4 +1,5 @@
 #!/bin/zsh
+# shellcheck shell=bash
 
 # Run Fathom UI tests in the iOS Simulator
 

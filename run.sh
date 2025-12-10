@@ -1,4 +1,5 @@
 #!/bin/zsh
+# shellcheck shell=bash
 
 # Build and run Fathom in the iOS Simulator
 
