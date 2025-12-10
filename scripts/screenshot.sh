@@ -3,6 +3,11 @@
 
 # Take a screenshot of the iOS Simulator
 
+set -euo pipefail  # Fail on errors
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/common.sh"
+
 OUTPUT_PATH="/tmp/simulator-screenshot.png"
 
 # Find the booted simulator UUID

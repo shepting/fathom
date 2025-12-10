@@ -3,7 +3,11 @@
 
 # Build and run Fathom in the iOS Simulator
 
-set -e
+set -euo pipefail  # Fail on errors
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$SCRIPT_DIR/common.sh"
 
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
@@ -15,10 +19,9 @@ if [ -n "$1" ]; then
 else
     SIMULATOR="${SIMULATOR:-$DEFAULT_SIMULATOR}"
 fi
-SCRIPT_DIR="$(dirname "$0")"
-BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
+BUILD_LOG="$REPO_ROOT/xcodebuild.log"
 BUILD_DIR="${DERIVED_DATA_PATH:-$HOME/Library/Developer/Xcode/DerivedData/Fathom-CLI}"
-LOG_FILE="$SCRIPT_DIR/simulator.log"
+LOG_FILE="$REPO_ROOT/simulator.log"
 
 echo "Using simulator: $SIMULATOR"
 

@@ -5,7 +5,7 @@
 After making changes to the app, build and run it in the simulator:
 
 ```bash
-./run.sh
+./scripts/run.sh
 ```
 
 This will also start logging simulator output to `simulator.log` in the repo.
@@ -13,7 +13,7 @@ This will also start logging simulator output to `simulator.log` in the repo.
 To verify UI changes, take a screenshot of the simulator:
 
 ```bash
-./screenshot.sh
+./scripts/screenshot.sh
 ```
 
 Then read the screenshot to see how the app looks:

@@ -3,13 +3,16 @@
 
 # Run Fathom UI tests in the iOS Simulator
 
-set -e
+set -euo pipefail  # Fail on errors
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$SCRIPT_DIR/common.sh"
 
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 SIMULATOR="iPhone 16"
-SCRIPT_DIR="$(dirname "$0")"
-BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
+BUILD_LOG="$REPO_ROOT/xcodebuild.log"
 
 echo "Using simulator: $SIMULATOR"
 

@@ -1,10 +1,13 @@
 #!/bin/zsh
 # shellcheck shell=bash
 
-set -euo pipefail
+set -euo pipefail  # Fail on errors
 
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-OUTPUT_DIR="$PROJECT_DIR/fastlane/screenshots/en-US"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "$SCRIPT_DIR/common.sh"
+
+OUTPUT_DIR="$REPO_ROOT/fastlane/screenshots/en-US"
 SCREENSHOT_PATH="/tmp/simulator-screenshot.png"
 
 typeset -A DEVICES=(
@@ -23,11 +26,12 @@ shutdown_all() {
 
 shutdown_all
 
+# shellcheck disable=SC2296
 for device in "${(@k)DEVICES}"; do
   echo "==== Capturing screenshots for $device ===="
-  "$PROJECT_DIR/run.sh" "$device"
+  "$SCRIPT_DIR/run.sh" "$device"
   sleep 20  # Wait for the app to fully load
-  "$PROJECT_DIR/screenshot.sh"
+  "$SCRIPT_DIR/screenshot.sh"
 
   if [[ ! -s "$SCREENSHOT_PATH" ]]; then
     echo "Failed to capture screenshot for $device" >&2
