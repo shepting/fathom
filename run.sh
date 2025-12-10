@@ -7,7 +7,13 @@ set -e
 SCHEME="Fathom"
 PROJECT="Fathom.xcodeproj"
 BUNDLE_ID="com.hepting.Fathom"
-SIMULATOR="iPhone 16"
+DEFAULT_SIMULATOR="iPhone 17"
+
+if [ -n "$1" ]; then
+    SIMULATOR="$1"
+else
+    SIMULATOR="${SIMULATOR:-$DEFAULT_SIMULATOR}"
+fi
 SCRIPT_DIR="$(dirname "$0")"
 BUILD_LOG="$SCRIPT_DIR/xcodebuild.log"
 BUILD_DIR="${DERIVED_DATA_PATH:-$HOME/Library/Developer/Xcode/DerivedData/Fathom-CLI}"
