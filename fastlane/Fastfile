@@ -3,11 +3,10 @@ default_platform(:ios)
 platform :ios do
   desc "Build and upload to TestFlight"
   lane :beta do
-    build_app(
+    # Archive the app
+    gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      output_directory: "./build",
-      output_name: "Fathom.ipa"
+      export_method: "app-store"
     )
     upload_to_testflight(
       skip_waiting_for_build_processing: true
@@ -16,11 +15,9 @@ platform :ios do
 
   desc "Build and upload to App Store"
   lane :release do
-    build_app(
+    gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      output_directory: "./build",
-      output_name: "Fathom.ipa"
+      export_method: "app-store"
     )
     upload_to_app_store(
       skip_screenshots: true,
@@ -31,11 +28,9 @@ platform :ios do
 
   desc "Build only (no upload)"
   lane :build do
-    build_app(
+    gym(
       scheme: "Fathom",
-      export_method: "app-store",
-      output_directory: "./build",
-      output_name: "Fathom.ipa"
+      export_method: "app-store"
     )
   end
 end
