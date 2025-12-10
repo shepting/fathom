@@ -52,7 +52,9 @@ system_and_log "xcrun simctl uninstall \"$SIMULATOR\" \"$BUNDLE_ID\" 2>/dev/null
 
 echo "Installing app..."
 APP_PATH=$(find "$BUILD_DIR/Build/Products" -name "*.app" -type d | head -1)
-system_and_log "xcrun simctl install \"$SIMULATOR\" \"$APP_PATH\""
+if ! system_and_log "xcrun simctl install \"$SIMULATOR\" \"$APP_PATH\""; then
+    failure "Failed to install app at $APP_PATH"
+fi
 log_info "App installed at $APP_PATH"
 
 # Kill any existing app or log process
