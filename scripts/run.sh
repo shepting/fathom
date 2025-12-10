@@ -44,6 +44,9 @@ system_and_log "xcodebuild -project \"$PROJECT\" \
 echo "Booting simulator..."
 system_and_log "xcrun simctl boot \"$SIMULATOR\" 2>/dev/null" || true
 
+echo "Waiting for simulator to finish booting..."
+system_and_log "xcrun simctl bootstatus \"$SIMULATOR\" -b"
+
 echo "Installing app..."
 APP_PATH=$(find "$BUILD_DIR/Build/Products" -name "*.app" -type d | head -1)
 system_and_log "xcrun simctl install \"$SIMULATOR\" \"$APP_PATH\""
@@ -59,7 +62,7 @@ system_and_log "xcrun simctl launch --console-pty \"$SIMULATOR\" \"$BUNDLE_ID\" 
 APP_PID=$!
 
 echo "Opening Simulator..."
-open -a Simulator
+system_and_log "open -a Simulator"
 
 # Give the app a moment to start and log initial messages
 sleep 2
