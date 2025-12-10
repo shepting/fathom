@@ -48,7 +48,7 @@ Fathom supports both legacy and modern AASA (apple-app-site-association) formats
 ```
 
 ### Modern Format (iOS 13+)
-Introduced at WWDC 2019 with enhanced URL component matching:
+Introduced at WWDC 2019 ([What's New in Universal Links](https://developer.apple.com/videos/play/wwdc2019/717/)) with enhanced URL component matching:
 ```json
 {
   "applinks": {
