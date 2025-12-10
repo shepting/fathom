@@ -47,9 +47,13 @@ system_and_log "xcrun simctl boot \"$SIMULATOR\" 2>/dev/null" || true
 echo "Waiting for simulator to finish booting..."
 system_and_log "xcrun simctl bootstatus \"$SIMULATOR\" -b"
 
+echo "Uninstalling existing build (if present)..."
+system_and_log "xcrun simctl uninstall \"$SIMULATOR\" \"$BUNDLE_ID\" 2>/dev/null" || true
+
 echo "Installing app..."
 APP_PATH=$(find "$BUILD_DIR/Build/Products" -name "*.app" -type d | head -1)
 system_and_log "xcrun simctl install \"$SIMULATOR\" \"$APP_PATH\""
+log_info "App installed at $APP_PATH"
 
 # Kill any existing app or log process
 pkill -f "simctl launch.*console" 2>/dev/null || true
