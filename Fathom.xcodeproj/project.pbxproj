@@ -1097,7 +1097,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomUIKit/FathomUIKit-Info.plist";
@@ -1127,7 +1126,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomUIKit/FathomUIKit-Info.plist";
@@ -1195,7 +1193,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomKit/FathomKit-Info.plist";
@@ -1225,7 +1222,6 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = SE9N6X5V7C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FathomKit/FathomKit-Info.plist";
@@ -1296,7 +1292,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hepting.FathomUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1317,7 +1312,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hepting.FathomUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
