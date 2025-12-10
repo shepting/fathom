@@ -46,8 +46,8 @@ class LinkViewController: UITableViewController {
             if let allPaths = self.userApp.paths {
                 // Sort paths: exact paths first, wildcards (*) in middle, excluded (NOT) at bottom
                 let sortedPaths = allPaths.sorted { path1, path2 in
-                    let rank1 = path1.excluded ? 2 : (path1.pathString.hasSuffix("*") ? 1 : 0)
-                    let rank2 = path2.excluded ? 2 : (path2.pathString.hasSuffix("*") ? 1 : 0)
+                    let rank1 = path1.excluded ? 2 : (path1.pathString.contains("*") ? 1 : 0)
+                    let rank2 = path2.excluded ? 2 : (path2.pathString.contains("*") ? 1 : 0)
                     return rank1 < rank2
                 }
                 let rows = sortedPaths.map { path in

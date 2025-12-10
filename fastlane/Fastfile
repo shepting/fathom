@@ -3,12 +3,13 @@ default_platform(:ios)
 platform :ios do
   desc "Build and upload to TestFlight"
   lane :beta do
-    # Archive the app
     gym(
       scheme: "Fathom",
       export_method: "app-store"
     )
     upload_to_testflight(
+      username: ENV["PERSONAL_APPLE_ID"],
+      team_id: ENV["PERSONAL_FASTLANE_ITC_TEAM_ID"],
       skip_waiting_for_build_processing: true
     )
   end
@@ -20,9 +21,12 @@ platform :ios do
       export_method: "app-store"
     )
     upload_to_app_store(
+      username: ENV["PERSONAL_APPLE_ID"],
+      team_id: ENV["PERSONAL_FASTLANE_ITC_TEAM_ID"],
       skip_screenshots: true,
       skip_metadata: true,
-      precheck_include_in_app_purchases: false
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false
     )
   end
 

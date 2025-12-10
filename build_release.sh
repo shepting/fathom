@@ -16,4 +16,4 @@ FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
 export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD
 
 # Run the standard TestFlight upload lane (build + upload).
-bundle exec fastlane beta "$@"
+bundle exec fastlane release "$@"
