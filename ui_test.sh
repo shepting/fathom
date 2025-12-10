@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Run Fathom UI tests in the iOS Simulator
 

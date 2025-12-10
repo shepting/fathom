@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Build and run Fathom in the iOS Simulator
 

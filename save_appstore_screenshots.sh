@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -euo pipefail
 
@@ -17,19 +17,10 @@ slugify() {
   echo "$1" | tr ' ' '-' | tr '()' '__' | tr -cd 'A-Za-z0-9_\n-'
 }
 
-target_filename_for_device() {
-  case "$1" in
-    "iPhone 11 Pro Max")
-      echo "iPhone-65-1.png"
-      ;;
-    "iPad Pro 13-inch (M4)")
-      echo "iPad-13-1.png"
-      ;;
-    *)
-      return 1
-      ;;
-  esac
-}
+typeset -A TARGET_FILENAMES=(
+  ["iPhone 11 Pro Max"]="iPhone-65-1.png"
+  ["iPad Pro 13-inch (M4)"]="iPad-13-1.png"
+)
 
 shutdown_all() {
   xcrun simctl shutdown all >/dev/null 2>&1 || true
@@ -52,9 +43,9 @@ for device in "${DEVICES[@]}"; do
   cp "$SCREENSHOT_PATH" "$device_file"
   echo "Saved raw screenshot to $device_file"
 
-  if target_name=$(target_filename_for_device "$device"); then
-    cp "$SCREENSHOT_PATH" "$OUTPUT_DIR/$target_name"
-    echo "Saved App Store screenshot to $OUTPUT_DIR/$target_name"
+  if [[ -n "${TARGET_FILENAMES[$device]:-}" ]]; then
+    cp "$SCREENSHOT_PATH" "$OUTPUT_DIR/${TARGET_FILENAMES[$device]}"
+    echo "Saved App Store screenshot to $OUTPUT_DIR/${TARGET_FILENAMES[$device]}"
   fi
 
   shutdown_all

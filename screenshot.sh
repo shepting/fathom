@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Take a screenshot of the iOS Simulator
 
