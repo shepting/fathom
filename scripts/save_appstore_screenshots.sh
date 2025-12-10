@@ -9,7 +9,7 @@ source "$SCRIPT_DIR/common.sh"
 
 export APPSTORE_SCREENSHOT_MODE="${APPSTORE_SCREENSHOT_MODE:-1}"
 
-OUTPUT_DIR="$REPO_ROOT/fastlane/screenshots/en-US"
+OUTPUT_DIR="$REPO_ROOT/Resources"
 
 typeset -A DEVICES=(
   ["iPhone 11 Pro Max"]="iPhone-65-1.png"
