@@ -21,6 +21,7 @@ public struct TableViewCellViewModel {
     let selectionStyle: UITableViewCell.SelectionStyle
     let accessoryType: UITableViewCell.AccessoryType
     let swipeActionsProvider: SwipeActionsProvider?
+    let showsLoadingIndicator: Bool
     var selectAction: Closure
     var detailAction: Closure
 
@@ -31,6 +32,7 @@ public struct TableViewCellViewModel {
                 selectionStyle: UITableViewCell.SelectionStyle = .default,
                 accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator,
                 swipeActionsProvider: SwipeActionsProvider? = nil,
+                showsLoadingIndicator: Bool = false,
                 selectAction: @escaping Closure = {},
                 detailAction: @escaping Closure = {}
         ) {
@@ -42,6 +44,7 @@ public struct TableViewCellViewModel {
         self.selectionStyle = selectionStyle
         self.accessoryType = accessoryType
         self.swipeActionsProvider = swipeActionsProvider
+        self.showsLoadingIndicator = showsLoadingIndicator
         self.selectAction = selectAction
         self.detailAction = detailAction
     }
@@ -87,6 +90,23 @@ public struct TableViewCellViewModel {
             cell.imageView?.image = UIGraphicsGetImageFromCurrentImageContext()
 
             UIGraphicsEndImageContext()
+        } else if showsLoadingIndicator {
+            // Show a spinner in place of the app icon
+            let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+            let spinner = UIActivityIndicatorView(style: .medium)
+            spinner.center = CGPoint(x: 30, y: 30)
+            spinner.startAnimating()
+            containerView.addSubview(spinner)
+
+            // Create a transparent image to reserve space
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: 60, height: 60), false, UIScreen.main.scale)
+            let transparentImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            cell.imageView?.image = transparentImage
+            cell.imageView?.addSubview(spinner)
+        } else {
+            cell.imageView?.image = nil
         }
 
         cell.selectionStyle = selectionStyle

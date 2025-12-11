@@ -152,6 +152,13 @@ class DetailViewController: UITableViewController {
                 })
 
                 allRows.append(appRow)
+            } else if userAppID.app != nil {
+                // App info is available but icon is still loading
+                let appRow = TableViewCellViewModel(title: userAppID.app!.appName, cellStyle: .default, showsLoadingIndicator: true, selectAction: {
+                    self.download(userAppID.appID)
+                })
+
+                allRows.append(appRow)
             }
 
             // Make the app info cell tappable to show Universal Links
