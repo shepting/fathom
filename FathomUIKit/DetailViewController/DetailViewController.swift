@@ -79,8 +79,8 @@ class DetailViewController: UITableViewController {
         let subtitle = "\(userAASA.cellSubtitle) • \(formatText)"
 
         let titleRow = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: subtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
-        let aasaActionsRow = TableViewCellViewModel(title: "Actions".localized(), subtitle: "Open in other tools, see raw file, or reload.".localized(), cellStyle: .subtitle, selectAction: {
-            let alertController = UIAlertController(title: "Actions".localized(), message: userAASA.url.absoluteString, preferredStyle: .alert)
+        let aasaActionsRow = TableViewCellViewModel(title: "AASA File Actions".localized(), subtitle: "Open in other tools, see raw file, or reload.".localized(), cellStyle: .subtitle, selectAction: {
+            let alertController = UIAlertController(title: "AASA File Actions".localized(), message: userAASA.url.absoluteString, preferredStyle: .alert)
 
             alertController.addAction(UIAlertAction(title: "Open App Search API Validation Tool".localized(), style: .default, handler: { (_) in
                 self.openInSearchAPIValidation(hostname: userAASA.hostname)
