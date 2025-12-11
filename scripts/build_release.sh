@@ -22,5 +22,9 @@ FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
   -a "$KEYCHAIN_ACCOUNT")
 export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD
 
-log_info "Running Fastlane release lane..."
-bundle exec fastlane release "$@"
+# Determine which lane to run (default: release for App Store)
+LANE="${1:-release}"
+shift 2>/dev/null || true
+
+log_info "Running Fastlane $LANE lane..."
+bundle exec fastlane "$LANE" "$@"
