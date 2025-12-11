@@ -154,16 +154,16 @@ class DetailViewController: UITableViewController {
                 allRows.append(appRow)
             }
 
-            let appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
-            allRows.append(appIDRow)
-
-            if //hasOnlyOneApp == false,
-                userAppID.supportsAppLinks {
-                let row = TableViewCellViewModel(title: "Universal Links".localized(), selectAction: {
+            // Make the app info cell tappable to show Universal Links
+            let appIDRow: TableViewCellViewModel
+            if userAppID.supportsAppLinks {
+                appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .default, accessoryType: .disclosureIndicator, selectAction: {
                     self.showLinkViewController(userApp: userAppID)
                 })
-                allRows.append(row)
+            } else {
+                appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
             }
+            allRows.append(appIDRow)
         }
 
         // Return a single section with all app rows
