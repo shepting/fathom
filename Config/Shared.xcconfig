@@ -11,7 +11,7 @@ TARGETED_DEVICE_FAMILY = 1,2
 SUPPORTED_PLATFORMS = iphonesimulator iphoneos
 
 // Swift
-SWIFT_VERSION = 5.0
+SWIFT_VERSION = 5.10
 
 // Code signing
 CODE_SIGN_STYLE = Automatic

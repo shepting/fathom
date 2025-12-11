@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Add support for modern AASA format
 - Rename from "Knil" to "Fathom"
+- Update project to Swift 5.10
 
 ## [2.0.0(12)] - 2025-12-09
 ### Added
