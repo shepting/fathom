@@ -52,9 +52,7 @@ extension UserApp {
         let pairs: [(Int, String)] = [
             (1, bundleIDLine),
             (1, teamIDLine),
-            (paths?.count ?? 0, "🔗 %li Universal Links"),
-            (supportsWebCredentials ? 1 : 0, "🤝 Activity Continuation"),
-            (supportsActivityContinuation ? 1 : 0, "🔐 Web Credentials")
+            (paths?.count ?? 0, "🔗 %li Universal Links")
         ]
 
         return pairs.filter ({ $0.0 > 0 }).map({ String(format: $0.1, $0.0) }).joined(separator: "\n")
