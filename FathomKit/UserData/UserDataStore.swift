@@ -67,6 +67,7 @@ public class UserDataStore {
             "www.facebook.com",
             "www.google.com",
             "www.instagram.com",
+            "www.openai.com",
             "www.spotify.com",
             "www.uber.com"
         ]
