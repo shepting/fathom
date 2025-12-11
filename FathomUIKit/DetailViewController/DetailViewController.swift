@@ -65,7 +65,7 @@ class DetailViewController: UITableViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.navigationItem.title = self.userAASA.hostname
-            self.viewModel.sections = [self.titleSection, self.customLinksSection] + self.appSections
+            self.viewModel.sections = [self.titleSection] + self.appSections + [self.customLinksSection]
             self.tableView.reloadData()
         }
     }
