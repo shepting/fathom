@@ -23,16 +23,23 @@ extension UserApp {
     }
 
     var cellTitle: String {
-        // Display all Bundle IDs with emoji
-        let bundleIDs = uniqueBundleIDs
-        if bundleIDs.count == 1 {
-            return "📦 Bundle ID: \(bundleIDs[0])"
-        } else {
-            return "📦 Bundle IDs: \(bundleIDs.joined(separator: ", "))"
+        // Use app name if available, otherwise use first bundle ID
+        if let app = self.app {
+            return app.appName
         }
+        return uniqueBundleIDs.first ?? ""
     }
 
     var cellSubtitle: String {
+        // Display Bundle IDs
+        let bundleIDs = uniqueBundleIDs
+        let bundleIDLine: String
+        if bundleIDs.count == 1 {
+            bundleIDLine = "📦 Bundle ID: \(bundleIDs[0])"
+        } else {
+            bundleIDLine = "📦 Bundle IDs: \(bundleIDs.joined(separator: ", "))"
+        }
+
         // Display all Team IDs
         let teamIDs = uniqueTeamIDs
         let teamIDLine: String
@@ -43,6 +50,7 @@ extension UserApp {
         }
 
         let pairs: [(Int, String)] = [
+            (1, bundleIDLine),
             (1, teamIDLine),
             (paths?.count ?? 0, "🔗 %li Universal Links"),
             (supportsWebCredentials ? 1 : 0, "🤝 Activity Continuation"),
