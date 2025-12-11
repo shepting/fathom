@@ -38,27 +38,74 @@ public class UserAASA: Codable {
 
         let newUserApps = UserAASA.extractUserApps(from: aasa, hostname: hostname)
         for newUserApp in newUserApps {
-            if let userApp = userApps.filter({ (userApp) -> Bool in
-                return userApp.appID == newUserApp.appID
-            }).first {
+            // Match by checking if any AppIDs overlap (since apps are grouped by content)
+            let newAppIDSet = Set(newUserApp.appIDs)
+            if let userApp = userApps.first(where: {
+                !Set($0.appIDs).intersection(newAppIDSet).isEmpty
+            }) {
                 userApp.update(paths: newUserApp.paths,
                                supportsAppLinks: newUserApp.supportsAppLinks,
                                supportsWebCredentials: newUserApp.supportsWebCredentials,
                                supportsActivityContinuation: newUserApp.supportsActivityContinuation)
+                userApp.addAppIDs(newUserApp.appIDs)
             }
         }
     }
 
     private static func extractUserApps(from aasa: AASA, hostname: String) -> [UserApp] {
-        var set: Set<AppID> = []
-        
-        // Extract app IDs from both legacy and new formats
+        var allAppIDs: Set<AppID> = []
+
+        // Extract app IDs from all sections
         for detail in aasa.appLinks?.details ?? [] {
-            set.formUnion(detail.allAppIDs)
+            allAppIDs.formUnion(detail.allAppIDs)
         }
-        
-        set.formUnion(aasa.webCredentials?.appIDs ?? [])
-        set.formUnion(aasa.activityContinuation?.appIDs ?? [])
-        return set.sorted(by: { $0.bundleID < $1.bundleID }).map { UserApp(hostname: hostname, appID: $0, aasa: aasa) }
+        allAppIDs.formUnion(aasa.webCredentials?.appIDs ?? [])
+        allAppIDs.formUnion(aasa.activityContinuation?.appIDs ?? [])
+
+        // Create temporary UserApp for each AppID to extract their content
+        let tempUserApps = allAppIDs.map { UserApp(hostname: hostname, appID: $0, aasa: aasa) }
+
+        // Group by content: paths, supportsAppLinks, supportsWebCredentials, supportsActivityContinuation
+        // Create a unique key based on content only (not bundle ID or team ID)
+        struct ContentKey: Hashable {
+            let paths: Set<AppPath>?
+            let supportsAppLinks: Bool
+            let supportsWebCredentials: Bool
+            let supportsActivityContinuation: Bool
+
+            init(userApp: UserApp) {
+                self.paths = userApp.paths.map { Set($0) }
+                self.supportsAppLinks = userApp.supportsAppLinks
+                self.supportsWebCredentials = userApp.supportsWebCredentials
+                self.supportsActivityContinuation = userApp.supportsActivityContinuation
+            }
+        }
+
+        // Group apps by content
+        var contentGroups: [ContentKey: [UserApp]] = [:]
+        for userApp in tempUserApps {
+            let key = ContentKey(userApp: userApp)
+            contentGroups[key, default: []].append(userApp)
+        }
+
+        // Create merged UserApps for each content group
+        var mergedUserApps: [UserApp] = []
+        for (key, userApps) in contentGroups {
+            let allAppIDsForGroup = userApps.map { $0.appID }
+            let representative = userApps.first!
+
+            let mergedUserApp = UserApp(
+                hostname: hostname,
+                appIDs: allAppIDsForGroup.sorted { $0.teamID < $1.teamID },
+                paths: representative.paths,
+                supportsAppLinks: key.supportsAppLinks,
+                supportsWebCredentials: key.supportsWebCredentials,
+                supportsActivityContinuation: key.supportsActivityContinuation
+            )
+            mergedUserApps.append(mergedUserApp)
+        }
+
+        // Sort by bundle ID for consistent ordering
+        return mergedUserApps.sorted { $0.appID.bundleID < $1.appID.bundleID }
     }
 }

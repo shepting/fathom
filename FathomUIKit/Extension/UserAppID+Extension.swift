@@ -10,16 +10,49 @@ import UIKit
 import FathomKit
 
 extension UserApp {
+    /// Returns unique bundle IDs from all AppIDs
+    var uniqueBundleIDs: [String] {
+        let bundleIDs = Set(appIDs.map { $0.bundleID })
+        return bundleIDs.sorted()
+    }
+
+    /// Returns unique team IDs from all AppIDs
+    var uniqueTeamIDs: [String] {
+        let teamIDs = Set(appIDs.map { $0.teamID })
+        return teamIDs.sorted()
+    }
+
     var cellTitle: String {
-        return appID.bundleID
+        // Use app name if available, otherwise use first bundle ID
+        if let app = self.app {
+            return app.appName
+        }
+        return uniqueBundleIDs.first ?? ""
     }
 
     var cellSubtitle: String {
+        // Display Bundle IDs
+        let bundleIDs = uniqueBundleIDs
+        let bundleIDLine: String
+        if bundleIDs.count == 1 {
+            bundleIDLine = "📦 Bundle ID: \(bundleIDs[0])"
+        } else {
+            bundleIDLine = "📦 Bundle IDs: \(bundleIDs.joined(separator: ", "))"
+        }
+
+        // Display all Team IDs
+        let teamIDs = uniqueTeamIDs
+        let teamIDLine: String
+        if teamIDs.count == 1 {
+            teamIDLine = "👥 Team ID: \(teamIDs[0])"
+        } else {
+            teamIDLine = "👥 Team IDs: \(teamIDs.joined(separator: ", "))"
+        }
+
         let pairs: [(Int, String)] = [
-            (1, "👥 Team ID: \(appID.teamID)"),
-            (paths?.count ?? 0, "🔗 %li Universal Links"),
-            (supportsWebCredentials ? 1 : 0, "🤝 Activity Continuation"),
-            (supportsActivityContinuation ? 1 : 0, "🔐 Web Credentials")
+            (1, bundleIDLine),
+            (1, teamIDLine),
+            (paths?.count ?? 0, "🔗 %li Universal Links")
         ]
 
         return pairs.filter ({ $0.0 > 0 }).map({ String(format: $0.1, $0.0) }).joined(separator: "\n")
@@ -48,14 +81,27 @@ extension UserApp {
         if let app = self.app {
             completion(.value(app))
         } else {
-            iTunesSearchAPI.searchApp(bundleID: self.appID.bundleID) { (result) in
-                switch result {
-                case .value(let app):
-                    self.app = app
-                    completion(.value(app))
-                case .error(let error):
-                    completion(.error(error))
-                }
+            // Try searching for each bundle ID until one succeeds
+            searchAppRecursively(bundleIDs: uniqueBundleIDs, index: 0, completion: completion)
+        }
+    }
+
+    private func searchAppRecursively(bundleIDs: [String], index: Int, completion: @escaping (_ result: Result<iTunesApp>) -> Void) {
+        guard index < bundleIDs.count else {
+            // All bundle IDs failed
+            completion(.error(FathomKitError.noData))
+            return
+        }
+
+        let bundleID = bundleIDs[index]
+        iTunesSearchAPI.searchApp(bundleID: bundleID) { (result) in
+            switch result {
+            case .value(let app):
+                self.app = app
+                completion(.value(app))
+            case .error:
+                // Try the next bundle ID
+                self.searchAppRecursively(bundleIDs: bundleIDs, index: index + 1, completion: completion)
             }
         }
     }

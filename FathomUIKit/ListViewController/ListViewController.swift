@@ -80,7 +80,7 @@ public class ListViewController: UITableViewController {
         let emptyRow = TableViewCellViewModel(title: "Tap here to download".localized(), subtitle: "apple-app-site-association file".localized(), cellStyle: .subtitle, selectAction: {
             self.presentAddingAASAAlertController()
         })
-        let rows: [TableViewCellViewModel] = self.dataStore.list(sortedBy: .fetchedDate).map { userAASA in
+        let rows: [TableViewCellViewModel] = self.dataStore.list(sortedBy: .hostname).map { userAASA in
             let row = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: userAASA.cellSubtitle, cellStyle: .subtitle, selectionStyle: .default, swipeActionsProvider: {
                 let deleteAction = UIContextualAction(style: .destructive, title: "Delete".localized()) { _, _, completionHandler in
                     self.dataStore.remove(userAASA)

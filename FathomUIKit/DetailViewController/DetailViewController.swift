@@ -65,7 +65,7 @@ class DetailViewController: UITableViewController {
     private func reloadData() {
         DispatchQueue.main.async {
             self.navigationItem.title = self.userAASA.hostname
-            self.viewModel.sections = [self.titleSection, self.customLinksSection] + self.appSections
+            self.viewModel.sections = [self.titleSection] + self.appSections + [self.customLinksSection]
             self.tableView.reloadData()
         }
     }
@@ -79,8 +79,8 @@ class DetailViewController: UITableViewController {
         let subtitle = "\(userAASA.cellSubtitle) • \(formatText)"
 
         let titleRow = TableViewCellViewModel(title: userAASA.cellTitle, subtitle: subtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
-        let aasaActionsRow = TableViewCellViewModel(title: "Actions".localized(), subtitle: "Open in other tools, see raw file, or reload.".localized(), cellStyle: .subtitle, selectAction: {
-            let alertController = UIAlertController(title: "Actions".localized(), message: userAASA.url.absoluteString, preferredStyle: .alert)
+        let aasaActionsRow = TableViewCellViewModel(title: "AASA File Actions".localized(), subtitle: "Open in other tools, see raw file, or reload.".localized(), cellStyle: .subtitle, selectAction: {
+            let alertController = UIAlertController(title: "AASA File Actions".localized(), message: userAASA.url.absoluteString, preferredStyle: .alert)
 
             alertController.addAction(UIAlertAction(title: "Open App Search API Validation Tool".localized(), style: .default, handler: { (_) in
                 self.openInSearchAPIValidation(hostname: userAASA.hostname)
@@ -142,36 +142,40 @@ class DetailViewController: UITableViewController {
 
     /// Sections for each AppID
     private var appSections: [TableViewSectionViewModel] {
-        var sections: [TableViewSectionViewModel] = []
+        var allRows: [TableViewCellViewModel] = []
 
         self.userAASA.userApps.forEach { userAppID in
-            var rows: [TableViewCellViewModel] = []
-
             if let app = userAppID.app,
                 let icon = userAppID.icon {
                 let appRow = TableViewCellViewModel(title: app.appName, image: icon, cellStyle: .default, selectAction: {
                     self.download(userAppID.appID)
                 })
 
-                rows.append(appRow)
+                allRows.append(appRow)
+            } else if userAppID.app != nil {
+                // App info is available but icon is still loading
+                let appRow = TableViewCellViewModel(title: userAppID.app!.appName, cellStyle: .default, showsLoadingIndicator: true, selectAction: {
+                    self.download(userAppID.appID)
+                })
+
+                allRows.append(appRow)
             }
 
-            let appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
-            rows.append(appIDRow)
-
-            if //hasOnlyOneApp == false,
-                userAppID.supportsAppLinks {
-                let row = TableViewCellViewModel(title: "Universal Links".localized(), selectAction: {
+            // Make the app info cell tappable to show Universal Links
+            let appIDRow: TableViewCellViewModel
+            if userAppID.supportsAppLinks {
+                appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .default, accessoryType: .disclosureIndicator, selectAction: {
                     self.showLinkViewController(userApp: userAppID)
                 })
-                rows.append(row)
+            } else {
+                appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
             }
-
-            let section = TableViewSectionViewModel(header: userAppID.appID.bundleID, footer: nil, rows: rows)
-            sections.append(section)
+            allRows.append(appIDRow)
         }
 
-        return sections
+        // Return a single section with all app rows
+        let section = TableViewSectionViewModel(header: nil, footer: nil, rows: allRows)
+        return [section]
     }
 
     @objc private func composeLink(_ url: URL, title: String) {

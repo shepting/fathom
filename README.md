@@ -1,6 +1,6 @@
 # Fathom 🔗
 
-![Fathom Header](Resources/HeaderSlice.png)
+![Fathom Header](Resources/OceanChain.png)
 
 [![CI](https://github.com/shepting/fathom/actions/workflows/ci.yml/badge.svg)](https://github.com/shepting/fathom/actions/workflows/ci.yml)
 ![GitHub top language](https://img.shields.io/github/languages/top/shepting/fathom.svg)
