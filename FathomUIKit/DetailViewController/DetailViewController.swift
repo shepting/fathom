@@ -142,36 +142,33 @@ class DetailViewController: UITableViewController {
 
     /// Sections for each AppID
     private var appSections: [TableViewSectionViewModel] {
-        var sections: [TableViewSectionViewModel] = []
+        var allRows: [TableViewCellViewModel] = []
 
         self.userAASA.userApps.forEach { userAppID in
-            var rows: [TableViewCellViewModel] = []
-
             if let app = userAppID.app,
                 let icon = userAppID.icon {
                 let appRow = TableViewCellViewModel(title: app.appName, image: icon, cellStyle: .default, selectAction: {
                     self.download(userAppID.appID)
                 })
 
-                rows.append(appRow)
+                allRows.append(appRow)
             }
 
             let appIDRow = TableViewCellViewModel(title: userAppID.cellTitle, subtitle: userAppID.cellSubtitle, cellStyle: .subtitle, selectionStyle: .none, accessoryType: .none)
-            rows.append(appIDRow)
+            allRows.append(appIDRow)
 
             if //hasOnlyOneApp == false,
                 userAppID.supportsAppLinks {
                 let row = TableViewCellViewModel(title: "Universal Links".localized(), selectAction: {
                     self.showLinkViewController(userApp: userAppID)
                 })
-                rows.append(row)
+                allRows.append(row)
             }
-
-            let section = TableViewSectionViewModel(header: nil, footer: nil, rows: rows)
-            sections.append(section)
         }
 
-        return sections
+        // Return a single section with all app rows
+        let section = TableViewSectionViewModel(header: nil, footer: nil, rows: allRows)
+        return [section]
     }
 
     @objc private func composeLink(_ url: URL, title: String) {
