@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct URLComponent: Codable {
+public struct URLComponent: Codable, Hashable {
     public let path: String?
     public let query: QueryComponent?
     public let fragment: String?
@@ -20,7 +20,7 @@ public struct URLComponent: Codable {
     }
 }
 
-public enum QueryComponent: Codable {
+public enum QueryComponent: Codable, Hashable {
     case string(String)
     case dictionary([String: String])
     

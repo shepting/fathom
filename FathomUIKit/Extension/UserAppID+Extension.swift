@@ -15,8 +15,17 @@ extension UserApp {
     }
 
     var cellSubtitle: String {
+        // Display all Team IDs if there are multiple
+        let teamIDLine: String
+        if appIDs.count == 1 {
+            teamIDLine = "👥 Team ID: \(appIDs[0].teamID)"
+        } else {
+            let teamIDs = appIDs.map { $0.teamID }.joined(separator: ", ")
+            teamIDLine = "👥 Team IDs: \(teamIDs)"
+        }
+
         let pairs: [(Int, String)] = [
-            (1, "👥 Team ID: \(appID.teamID)"),
+            (1, teamIDLine),
             (paths?.count ?? 0, "🔗 %li Universal Links"),
             (supportsWebCredentials ? 1 : 0, "🤝 Activity Continuation"),
             (supportsActivityContinuation ? 1 : 0, "🔐 Web Credentials")

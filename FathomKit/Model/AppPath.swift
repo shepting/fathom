@@ -9,7 +9,7 @@
 import Foundation
 
 /// Note that only the path component of the URL is used for comparison. Other components, such as the query string or fragment identifier, are ignored.
-public struct AppPath: Codable {
+public struct AppPath: Codable, Hashable, Equatable {
     /// The strings you use to specify website paths is case sensitive.
     public let pathString: String
     public let excluded: Bool
