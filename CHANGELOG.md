@@ -5,19 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Add support for modern AASA format
-- Rename from "Knil" to "Fathom"
 - Update project to Swift 5.10
 
 ## [2.0.0(12)] - 2025-12-09
 ### Added
 - `save_appstore_screenshots.sh` for one-command 6.5" iPhone and 13" iPad App Store screenshots
 - AGENTS instructions covering the new screenshot workflow
+- Add support for modern AASA format
 
 ### Changed
 - `run.sh` accepts a simulator argument/env override so we can target specific devices without editing the script
 - Build settings now list `iphonesimulator` explicitly, allowing `xcodebuild` to find iOS simulator destinations again
 - Documentation and metadata files updated to reflect the current automated screenshot process
+- Rename from "Knil" to "Fathom"
 
 ## [1.1.0(9)] - 2019-05-26
 ### Added
