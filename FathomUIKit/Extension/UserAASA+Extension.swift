@@ -19,9 +19,13 @@ extension UserAASA {
         let format = aasa.appLinks?.format ?? .legacy
         let formatLine = format == .modern ? "📋 Format: Modern (iOS 13+)" : "📋 Format: Legacy"
 
+        // Use singular/plural for Apps
+        let appCount = userApps.count
+        let appLine = appCount == 1 ? "💡 1 App" : "💡 \(appCount) Apps"
+
         let pairs: [(Int?, String)] = [
             (0, "🌎 \(url.absoluteString)"),
-            (userApps.count, "💡 %li App ID(s)"),
+            (0, appLine),
             (aasa.appLinks?.details.count, "🔗 %li App Links"), // App Links
             (aasa.activityContinuation?.appIDs.count, "🤝 %li Activity Continuation"), // Activity Continuation
             (aasa.webCredentials?.appIDs.count, "🔐 %li Web Credentials"), // Web Credentials
