@@ -34,9 +34,10 @@ public class ListViewController: UITableViewController {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
+
             if let headerImage = UIImage(named: "HeaderBackground") {
                 appearance.backgroundImage = headerImage
-                appearance.backgroundImageContentMode = .scaleAspectFill
+                appearance.backgroundImageContentMode = .scaleToFill
             }
             appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
@@ -47,6 +48,7 @@ public class ListViewController: UITableViewController {
             navigationController?.navigationBar.compactAppearance = appearance
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.tintColor = .white
+            navigationController?.navigationBar.isTranslucent = false
         } else {
             if let headerImage = UIImage(named: "HeaderBackground") {
                 navigationController?.navigationBar.setBackgroundImage(headerImage, for: .default)
@@ -55,9 +57,11 @@ public class ListViewController: UITableViewController {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.isTranslucent = false
         }
 
         navigationItem.title = "Fathom"
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddingAASAAlertController))
 
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
