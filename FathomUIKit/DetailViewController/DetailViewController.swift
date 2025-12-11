@@ -167,7 +167,7 @@ class DetailViewController: UITableViewController {
                 rows.append(row)
             }
 
-            let section = TableViewSectionViewModel(header: userAppID.appID.bundleID, footer: nil, rows: rows)
+            let section = TableViewSectionViewModel(header: userAppID.cellTitle, footer: nil, rows: rows)
             sections.append(section)
         }
 

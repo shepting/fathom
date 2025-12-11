@@ -38,8 +38,11 @@ public class UserAASA: Codable {
 
         let newUserApps = UserAASA.extractUserApps(from: aasa, hostname: hostname)
         for newUserApp in newUserApps {
-            // Match by bundle ID since apps are now grouped by content
-            if let userApp = userApps.first(where: { $0.appID.bundleID == newUserApp.appID.bundleID }) {
+            // Match by checking if any AppIDs overlap (since apps are grouped by content)
+            let newAppIDSet = Set(newUserApp.appIDs)
+            if let userApp = userApps.first(where: {
+                !Set($0.appIDs).intersection(newAppIDSet).isEmpty
+            }) {
                 userApp.update(paths: newUserApp.paths,
                                supportsAppLinks: newUserApp.supportsAppLinks,
                                supportsWebCredentials: newUserApp.supportsWebCredentials,
@@ -63,20 +66,18 @@ public class UserAASA: Codable {
         let tempUserApps = allAppIDs.map { UserApp(hostname: hostname, appID: $0, aasa: aasa) }
 
         // Group by content: paths, supportsAppLinks, supportsWebCredentials, supportsActivityContinuation
-        // Create a unique key based on content
+        // Create a unique key based on content only (not bundle ID or team ID)
         struct ContentKey: Hashable {
             let paths: Set<AppPath>?
             let supportsAppLinks: Bool
             let supportsWebCredentials: Bool
             let supportsActivityContinuation: Bool
-            let bundleID: String  // Group by bundle ID too
 
             init(userApp: UserApp) {
                 self.paths = userApp.paths.map { Set($0) }
                 self.supportsAppLinks = userApp.supportsAppLinks
                 self.supportsWebCredentials = userApp.supportsWebCredentials
                 self.supportsActivityContinuation = userApp.supportsActivityContinuation
-                self.bundleID = userApp.appID.bundleID
             }
         }
 

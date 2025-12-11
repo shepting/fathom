@@ -10,18 +10,35 @@ import UIKit
 import FathomKit
 
 extension UserApp {
+    /// Returns unique bundle IDs from all AppIDs
+    var uniqueBundleIDs: [String] {
+        let bundleIDs = Set(appIDs.map { $0.bundleID })
+        return bundleIDs.sorted()
+    }
+
+    /// Returns unique team IDs from all AppIDs
+    var uniqueTeamIDs: [String] {
+        let teamIDs = Set(appIDs.map { $0.teamID })
+        return teamIDs.sorted()
+    }
+
     var cellTitle: String {
-        return appID.bundleID
+        let bundleIDs = uniqueBundleIDs
+        if bundleIDs.count == 1 {
+            return bundleIDs[0]
+        } else {
+            return bundleIDs.joined(separator: ", ")
+        }
     }
 
     var cellSubtitle: String {
-        // Display all Team IDs if there are multiple
+        // Display all Team IDs
+        let teamIDs = uniqueTeamIDs
         let teamIDLine: String
-        if appIDs.count == 1 {
-            teamIDLine = "👥 Team ID: \(appIDs[0].teamID)"
+        if teamIDs.count == 1 {
+            teamIDLine = "👥 Team ID: \(teamIDs[0])"
         } else {
-            let teamIDs = appIDs.map { $0.teamID }.joined(separator: ", ")
-            teamIDLine = "👥 Team IDs: \(teamIDs)"
+            teamIDLine = "👥 Team IDs: \(teamIDs.joined(separator: ", "))"
         }
 
         let pairs: [(Int, String)] = [
