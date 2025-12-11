@@ -17,6 +17,14 @@ public class UserApp: Codable {
         return appIDs.first!
     }
 
+    /// Returns the format based on whether paths are component-based
+    public var format: AASAFormat {
+        if let paths = paths, paths.contains(where: { $0.isComponentBased }) {
+            return .modern
+        }
+        return .legacy
+    }
+
     public private(set) var paths: [AppPath]?
     public private(set) var supportsAppLinks: Bool = false
     public private(set) var supportsWebCredentials: Bool = false
