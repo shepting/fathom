@@ -64,7 +64,7 @@ public class UserDataStore {
     private var seedHostnames: [String] {
         return [
             "www.airbnb.com",
-            "chatgpt.com",
+            "www.chatgpt.com",
             "www.facebook.com",
             "www.google.com",
             "www.instagram.com",
