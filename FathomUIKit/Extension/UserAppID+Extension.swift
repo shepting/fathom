@@ -23,11 +23,12 @@ extension UserApp {
     }
 
     var cellTitle: String {
+        // Display all Bundle IDs with emoji
         let bundleIDs = uniqueBundleIDs
         if bundleIDs.count == 1 {
-            return bundleIDs[0]
+            return "📦 Bundle ID: \(bundleIDs[0])"
         } else {
-            return bundleIDs.joined(separator: ", ")
+            return "📦 Bundle IDs: \(bundleIDs.joined(separator: ", "))"
         }
     }
 
