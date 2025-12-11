@@ -30,13 +30,38 @@ public class ListViewController: UITableViewController {
 
         tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
 
-        navigationController?.navigationBar.barTintColor = .barTint
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.tint]
-        if #available(iOS 11.0, *) {
+        // Configure navigation bar with background image and white title
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+
+            if let headerImage = UIImage(named: "HeaderBackground") {
+                appearance.backgroundImage = headerImage
+                appearance.backgroundImageContentMode = .scaleToFill
+            }
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.shadowColor = .clear
+
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.compactAppearance = appearance
             navigationController?.navigationBar.prefersLargeTitles = true
-            navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.tint]
+            navigationController?.navigationBar.tintColor = .white
+            navigationController?.navigationBar.isTranslucent = false
+        } else {
+            if let headerImage = UIImage(named: "HeaderBackground") {
+                navigationController?.navigationBar.setBackgroundImage(headerImage, for: .default)
+                navigationController?.navigationBar.shadowImage = UIImage()
+            }
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.isTranslucent = false
         }
-        navigationItem.title = "AASA".localized()
+
+        navigationItem.title = "Fathom"
+        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddingAASAAlertController))
 
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)

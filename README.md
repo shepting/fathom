@@ -1,7 +1,8 @@
 # Fathom 🔗
 
+![Fathom Header](Resources/HeaderSlice.png)
+
 [![CI](https://github.com/shepting/fathom/actions/workflows/ci.yml/badge.svg)](https://github.com/shepting/fathom/actions/workflows/ci.yml)
-![GitHub release](https://img.shields.io/github/release/shepting/fathom.svg)
 ![GitHub top language](https://img.shields.io/github/languages/top/shepting/fathom.svg)
 ![](https://img.shields.io/badge/Platform-iOS%2015.6%2B-lightgrey.svg)
 [![License](https://img.shields.io/github/license/shepting/fathom.svg)](https://github.com/shepting/fathom/blob/master/LICENSE)
@@ -21,12 +22,12 @@ Add websites, download related apps, test Universal Links, and customize test li
 
 | | Features |
 | --- | --- |
-| 😇 | Open source iOS project written in Swift 5.10 |
+| 😇 | Open source iOS project written in Swift |
 | 📲 | Fetch and parse apple-app-site-association(AASA) files |
 | 💡 | App Store links and metadata |
 | 🚀 | List all Universal Link paths. One-tap to test! |
 | 🛠️ | Customize test links |
-| 🤝 | Link to other validation tools like Branch.io's [AASA Validator](https://branch.io/resources/aasa-validator/) or Apple's [App Search API Validation Tool](https://search.developer.apple.com/appsearch-validation-tool/) | 
+| 🤝 | Link to other validation tools like Branch.io's [AASA Validator](https://branch.io/resources/aasa-validator/) or Apple's [App Search API Validation Tool](https://search.developer.apple.com/appsearch-validation-tool/) |
 | 🆓 | Free without ads |
 | 🚫 | No third-party tracking or analytics |
 
@@ -71,9 +72,7 @@ Key differences in the modern format:
 - `exclude` key for explicit exclusion rules
 
 ## Naming
-```
-"fathom" == "link".reversed()
-```
+> Fathom takes its name from the old nautical practice of dropping a chain to fathom the depth—an apt metaphor for tracing the often-hidden paths of “deep” links (iOS Universal Links). Just as that chain helps sailors understand what lies beneath the surface, Fathom helps you dive into Apple App Site Association files and uncover exactly how your links resolve, fail, or redirect.
 
 ## Install
 
