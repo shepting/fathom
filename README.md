@@ -21,7 +21,7 @@ Add websites, download related apps, test Universal Links, and customize test li
 
 | | Features |
 | --- | --- |
-| 😇 | Open source iOS project written in Swift 5 |
+| 😇 | Open source iOS project written in Swift 5.10 |
 | 📲 | Fetch and parse apple-app-site-association(AASA) files |
 | 💡 | App Store links and metadata |
 | 🚀 | List all Universal Link paths. One-tap to test! |
