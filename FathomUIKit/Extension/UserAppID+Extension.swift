@@ -81,14 +81,27 @@ extension UserApp {
         if let app = self.app {
             completion(.value(app))
         } else {
-            iTunesSearchAPI.searchApp(bundleID: self.appID.bundleID) { (result) in
-                switch result {
-                case .value(let app):
-                    self.app = app
-                    completion(.value(app))
-                case .error(let error):
-                    completion(.error(error))
-                }
+            // Try searching for each bundle ID until one succeeds
+            searchAppRecursively(bundleIDs: uniqueBundleIDs, index: 0, completion: completion)
+        }
+    }
+
+    private func searchAppRecursively(bundleIDs: [String], index: Int, completion: @escaping (_ result: Result<iTunesApp>) -> Void) {
+        guard index < bundleIDs.count else {
+            // All bundle IDs failed
+            completion(.error(FathomKitError.noData))
+            return
+        }
+
+        let bundleID = bundleIDs[index]
+        iTunesSearchAPI.searchApp(bundleID: bundleID) { (result) in
+            switch result {
+            case .value(let app):
+                self.app = app
+                completion(.value(app))
+            case .error:
+                // Try the next bundle ID
+                self.searchAppRecursively(bundleIDs: bundleIDs, index: index + 1, completion: completion)
             }
         }
     }
