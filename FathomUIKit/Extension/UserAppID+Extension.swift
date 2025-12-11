@@ -49,13 +49,9 @@ extension UserApp {
             teamIDLine = "👥 Team IDs: \(teamIDs.joined(separator: ", "))"
         }
 
-        // Display format
-        let formatLine = format == .modern ? "📋 Format: Modern (iOS 13+)" : "📋 Format: Legacy"
-
         let pairs: [(Int, String)] = [
             (1, bundleIDLine),
             (1, teamIDLine),
-            (1, formatLine),
             (paths?.count ?? 0, "🔗 %li Universal Links"),
             (supportsWebCredentials ? 1 : 0, "🤝 Activity Continuation"),
             (supportsActivityContinuation ? 1 : 0, "🔐 Web Credentials")
