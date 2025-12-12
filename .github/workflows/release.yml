@@ -1,0 +1,59 @@
+name: Release Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Fastlane lane to run'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - beta
+          - build
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          brew install xcbeautify
+
+      - name: Configure environment
+        env:
+          PERSONAL_APPLE_ID: ${{ secrets.PERSONAL_APPLE_ID }}
+          PERSONAL_FASTLANE_ITC_TEAM_ID: ${{ secrets.PERSONAL_FASTLANE_ITC_TEAM_ID }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+        run: |
+          echo "PERSONAL_APPLE_ID=$PERSONAL_APPLE_ID" >> $GITHUB_ENV
+          echo "PERSONAL_FASTLANE_ITC_TEAM_ID=$PERSONAL_FASTLANE_ITC_TEAM_ID" >> $GITHUB_ENV
+          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD" >> $GITHUB_ENV
+
+      - name: Run release build
+        run: ./scripts/build_release.sh ${{ github.event.inputs.lane }}
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            Fathom.ipa
+            xcodebuild.log
+          retention-days: 30
+
+      - name: Post completion annotation
+        if: always()
+        run: |
+          echo "::notice title=Release Build::Build completed for lane: ${{ github.event.inputs.lane }}"

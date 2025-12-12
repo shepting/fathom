@@ -56,4 +56,51 @@ final class DeeplinkUITests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+
+    func testNavigateToGoogleAndFindGoogleMaps() throws {
+        // Verify the app launches
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5), "App should launch")
+
+        // Wait for the list to load
+        sleep(2)
+
+        // Find and tap the google.com cell
+        let googleCell = app.cells.staticTexts["www.google.com"]
+        XCTAssertTrue(googleCell.waitForExistence(timeout: 10), "Google.com cell should exist")
+        googleCell.tap()
+
+        // Wait for the detail view to load
+        sleep(2)
+
+        // Take a screenshot of the Google detail view
+        let detailScreenshot = XCUIScreen.main.screenshot()
+        let detailAttachment = XCTAttachment(screenshot: detailScreenshot)
+        detailAttachment.name = "Google Detail View"
+        detailAttachment.lifetime = .keepAlways
+        add(detailAttachment)
+
+        // Find the table view and scroll to find Google Maps
+        let table = app.tables.firstMatch
+
+        // Scroll down to find the Google Maps cell
+        var googleMapsCell = app.cells.staticTexts["Google Maps"]
+        var attempts = 0
+        let maxAttempts = 10
+
+        while !googleMapsCell.exists && attempts < maxAttempts {
+            table.swipeUp()
+            sleep(1)
+            googleMapsCell = app.cells.staticTexts["Google Maps"]
+            attempts += 1
+        }
+
+        XCTAssertTrue(googleMapsCell.exists, "Google Maps cell should be found after scrolling")
+
+        // Take a screenshot showing Google Maps cell
+        let mapsScreenshot = XCUIScreen.main.screenshot()
+        let mapsAttachment = XCTAttachment(screenshot: mapsScreenshot)
+        mapsAttachment.name = "Google Maps Cell Found"
+        mapsAttachment.lifetime = .keepAlways
+        add(mapsAttachment)
+    }
 }

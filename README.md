@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/github/license/shepting/fathom.svg)](https://github.com/shepting/fathom/blob/master/LICENSE)
 [![Twitter](https://img.shields.io/badge/Twitter-%40stevenhepting-blue.svg)](https://twitter.com/stevenhepting)
 
-[![](Resources/App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
+[![](Resources/App_Store_Badge.svg)](https://apps.apple.com/us/app/fathom-aasa/id6749783250)
 
 Fathom made Universal Links testing easier. It fetches and parses apple-app-site-association file for you to quickly check whether Universal Links are working.
 
@@ -76,9 +76,9 @@ Key differences in the modern format:
 
 ## Install
 
-[![](Resources/App_Store_Badge.svg)](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README)
+[![](Resources/App_Store_Badge.svg)](https://apps.apple.com/us/app/fathom-aasa/id6749783250)
 
-Download the official release version from [App Store](https://itunes.apple.com/us/app/fathom-universal-link-testing/id1195310358?l=zh&ls=1&mt=8&ct=README).
+Download the official release version from [App Store](https://apps.apple.com/us/app/fathom-aasa/id6749783250).
 
 Or, you can install this open source app with the following steps:
 
