@@ -18,6 +18,7 @@ platform :ios do
     match(
       type: "appstore",
       readonly: ENV["CI"] == "true",
+      git_url: ENV["CI"] ? "https://github.com/shepting/certificates" : nil,  # Use HTTPS in CI, SSH locally
       keychain_name: ENV["CI"] ? "fastlane_keychain" : nil,
       keychain_password: ENV["CI"] ? (ENV["MATCH_KEYCHAIN_PASSWORD"] || "temp_password") : nil
     )
