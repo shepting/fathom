@@ -13,14 +13,19 @@ if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 
-log_info "Fetching Fastlane app-specific password from keychain..."
-KEYCHAIN_SERVICE="fastlane_app_specific_password"
-KEYCHAIN_ACCOUNT="${PERSONAL_APPLE_ID:?PERSONAL_APPLE_ID environment variable is required}"
-FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
-  -w \
-  -s "$KEYCHAIN_SERVICE" \
-  -a "$KEYCHAIN_ACCOUNT")
-export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD
+log_info "Setting up Fastlane app-specific password..."
+if [ -z "${FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD:-}" ]; then
+  log_info "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD not set, fetching from keychain..."
+  KEYCHAIN_SERVICE="fastlane_app_specific_password"
+  KEYCHAIN_ACCOUNT="${PERSONAL_APPLE_ID:?PERSONAL_APPLE_ID environment variable is required}"
+  FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$(security find-generic-password \
+    -w \
+    -s "$KEYCHAIN_SERVICE" \
+    -a "$KEYCHAIN_ACCOUNT")
+  export FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD
+else
+  log_info "Using FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD from environment"
+fi
 
 # Determine which lane to run (default: release for App Store)
 LANE="${1:-release}"
