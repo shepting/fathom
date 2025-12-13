@@ -30,17 +30,15 @@ jobs:
         run: |
           brew install xcbeautify
 
-      - name: Configure environment
+      - name: Run release build
         env:
+          CI: "true"
           PERSONAL_APPLE_ID: ${{ secrets.PERSONAL_APPLE_ID }}
           PERSONAL_FASTLANE_ITC_TEAM_ID: ${{ secrets.PERSONAL_FASTLANE_ITC_TEAM_ID }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-        run: |
-          echo "PERSONAL_APPLE_ID=$PERSONAL_APPLE_ID" >> $GITHUB_ENV
-          echo "PERSONAL_FASTLANE_ITC_TEAM_ID=$PERSONAL_FASTLANE_ITC_TEAM_ID" >> $GITHUB_ENV
-          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=$FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD" >> $GITHUB_ENV
-
-      - name: Run release build
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
         run: ./scripts/build_release.sh ${{ github.event.inputs.lane }}
 
       - name: Upload build artifacts
