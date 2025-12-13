@@ -15,7 +15,19 @@ class TabBarController: UITabBarController {
 
         setNeedsStatusBarAppearanceUpdate()
 
-        tabBar.barTintColor = .barTint
+        // Configure tab bar appearance for dark mode support
+        if #available(iOS 13.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .barTint
+
+            tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
+        } else {
+            tabBar.barTintColor = .barTint
+        }
 
         let listVC = ListViewController(style: .plain)
         listVC.urlOpener = UIApplication.shared.delegate as? AppDelegate
