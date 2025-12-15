@@ -5,6 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+FASTLANE_DIR="$REPO_ROOT/fastlane"
 source "$SCRIPT_DIR/common.sh"
 cd "$REPO_ROOT"
 
@@ -32,4 +33,7 @@ LANE="${1:-release}"
 shift 2>/dev/null || true
 
 log_info "Running Fastlane $LANE lane..."
+export BUNDLE_GEMFILE="$FASTLANE_DIR/Gemfile"
+pushd "$FASTLANE_DIR" >/dev/null
 bundle exec fastlane "$LANE" "$@"
+popd >/dev/null

@@ -16,6 +16,8 @@ on:
 jobs:
   release:
     runs-on: macos-latest
+    env:
+      BUNDLE_GEMFILE: fastlane/Gemfile
 
     steps:
       - name: Checkout
