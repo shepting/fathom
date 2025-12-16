@@ -18,6 +18,7 @@ vendor/bundle
 build/
 .build/
 DerivedData
+.beads/
 
 ## Various settings
 *.pbxuser
